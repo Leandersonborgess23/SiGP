@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% block titulo %}Login - SIGP{% endblock %}
+{% block conteudo %}
+<h2>Login</h2>
+<form method="POST">
+    {{ form.hidden_tag() }}
+    <div>
+        {{ form.username.label }}<br>
+        {{ form.username(size=30) }}
+        {% for error in form.username.errors %}
+            <span style="color: red;">[{{ error }}]</span>
+        {% endfor %}
+    </div>
+    <div>
+        {{ form.password.label }}<br>
+        {{ form.password(size=30) }}
+        {% for error in form.password.errors %}
+            <span style="color: red;">[{{ error }}]</span>
+        {% endfor %}
+    </div>
+    <div>
+        {{ form.remember_me() }} {{ form.remember_me.label }}
+    </div>
+    <div>
+        {{ form.submit(class="btn") }}
+    </div>
+</form>
+<p>Ainda não tem conta? <a href="{{ url_for('cadastrar') }}">Cadastre-se</a></p>
+{% endblock %}

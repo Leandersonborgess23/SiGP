@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+{% block titulo %}Servidores - SIGP{% endblock %}
+{% block conteudo %}
+<h2>Servidores</h2>
+
+<form method="POST">
+    {{ form.hidden_tag() }}
+    <div>{{ form.nome.label }}<br>{{ form.nome(size=40) }}</div>
+    <div>{{ form.cpf.label }}<br>{{ form.cpf(size=20) }}</div>
+    <div>{{ form.email.label }}<br>{{ form.email(size=40) }}</div>
+    <div>{{ form.telefone.label }}<br>{{ form.telefone(size=20) }}</div>
+    <div>{{ form.cargo_id.label }}<br>{{ form.cargo_id() }}</div>
+    <div>{{ form.secretaria_id.label }}<br>{{ form.secretaria_id() }}</div>
+    <div>{{ form.submit(class="btn") }}</div>
+</form>
+
+<h3>Servidores Cadastrados</h3>
+<table>
+    <thead>
+        <tr>
+            <th>Nome</th>
+            <th>CPF</th>
+            <th>Cargo</th>
+            <th>Secretaria</th>
+            <th>Ações</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for s in servidores %}
+        <tr>
+            <td>{{ s.nome }}</td>
+            <td>{{ s.cpf or '-' }}</td>
+            <td>{{ s.cargo.nome if s.cargo else '-' }}</td>
+            <td>{{ s.secretaria.nome if s.secretaria else '-' }}</td>
+            <td><a href="{{ url_for('remover_servidor', id=s.id) }}">Remover</a></td>
+        </tr>
+        {% else %}
+        <tr><td colspan="5">Nenhum servidor cadastrado.</td></tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

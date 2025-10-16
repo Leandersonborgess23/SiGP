@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{% block titulo %}Usuários - SIGP{% endblock %}
+{% block conteudo %}
+<h2>Lista de Usuários</h2>
+<table>
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Nome de Usuário</th>
+            <th>Email</th>
+            <th>Ações</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for usuario in usuarios %}
+        <tr>
+            <td>{{ usuario.id }}</td>
+            <td>{{ usuario.username }}</td>
+            <td>{{ usuario.email }}</td>
+            <td>
+                <a href="{{ url_for('remover_usuario', id=usuario.id) }}">Remover</a>
+            </td>
+        </tr>
+        {% else %}
+        <tr>
+            <td colspan="4">Nenhum usuário cadastrado.</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

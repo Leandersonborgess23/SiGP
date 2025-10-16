@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block titulo %}SIGP - Sistema de Gestão da Prefeitura{% endblock %}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <header>
+        <h1>SIGP - Sistema de Gestão da Prefeitura</h1>
+        <nav>
+            <a href="{{ url_for('home') }}">Início</a>
+            <a href="{{ url_for('listar') }}">Usuários</a>
+            <a href="{{ url_for('servidores') }}">Servidores</a>
+            <a href="{{ url_for('secretarias') }}">Secretarias</a>
+            <a href="{{ url_for('login') }}">Login</a>
+            <a href="{{ url_for('logout') }}">Sair</a>
+        </nav>
+    </header>
+
+    {% with mensagens = get_flashed_messages(with_categories=true) %}
+      {% if mensagens %}
+        <div class="mensagens">
+          {% for categoria, mensagem in mensagens %}
+            <p class="{{ categoria }}">{{ mensagem }}</p>
+          {% endfor %}
+        </div>
+      {% endif %}
+    {% endwith %}
+
+    <main>
+        {% block conteudo %}{% endblock %}
+    </main>
+
+    <footer>
+        <p>&copy; {{ 2025 }} Prefeitura de Pureza - Sistema de Gestão (SIGP)</p>
+    </footer>
+</body>
+</html>
