@@ -8,6 +8,7 @@ from app.controllers.usuarioController import UsuarioController
 from app.controllers.servidorController import ServidorController
 from app.controllers.secretariaController import SecretariaController
 from app.models import Secretaria, Cargo
+from app.models.usuario import Usuario
 
 
 @app.route("/")
@@ -61,11 +62,39 @@ def listar():
     return render_template("listar.html", usuarios=lista_usuarios)
 
 
+@app.route('/usuarios/<int:id>/edit', methods=['GET', 'POST'])
+def usuarios_edit(id):
+    usuario = db.session.get(Usuario, id)
+    if not usuario:
+        flash('Usuário não encontrado.', 'danger')
+        return redirect(url_for('usuarios_index'))
+
+    form = UsuarioForm(obj=usuario)  # pré-preenche o formulário
+    if form.validate_on_submit():
+        resultado = UsuarioController.atualizar_usuario(id, form)
+        if resultado:
+            flash('Usuário atualizado com sucesso!', 'success')
+            return redirect(url_for('usuarios_index'))
+        else:
+            flash('Erro ao atualizar usuário.', 'danger')
+    return render_template('edit.html', form=form, usuario=usuario)
+
+
+@app.route('/usuarios/<int:id>/delete', methods=['POST'])
+def usuarios_delete(id):
+    resultado = UsuarioController.remover_usuario(id)
+    if resultado:
+        flash('Usuário excluído com sucesso!', 'success')
+    else:
+        flash('Erro ao excluir usuário.', 'danger')
+    return redirect(url_for('usuarios_index'))
+
+"""
 @app.route('/remover/<int:id>', methods=['GET'])
 def remover_usuario(id):
     UsuarioController.remover_usuario(id)
     flash("Usuário removido com sucesso.", "success")
-    return redirect(url_for("listar"))
+    return redirect(url_for("listar"))"""
 
 
 @app.route('/servidores', methods=['GET', 'POST'])

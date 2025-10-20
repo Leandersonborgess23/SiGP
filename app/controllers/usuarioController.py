@@ -36,3 +36,27 @@ class UsuarioController:
     @staticmethod
     def buscar_por_username(username):
         return Usuario.query.filter_by(username=username).first()
+    
+    @staticmethod
+    def atualizar_usuario(id, form):
+        usuario = db.session.get(Usuario, id)
+        if usuario:
+            form.populate_obj(usuario)  # Preenche o objeto com os dados do form
+            db.session.commit()
+            print('Usuário atualizado com sucesso!')
+            return True
+        else:
+            print('Usuário não encontrado.')
+            return False
+
+    @staticmethod
+    def remover_usuario(id):
+        usuario = db.session.get(Usuario, id)
+        if usuario:
+            db.session.delete(usuario)
+            db.session.commit()
+            print('Usuário removido com sucesso!')
+            return True
+        else:
+            print('Usuário não encontrado.')
+            return False

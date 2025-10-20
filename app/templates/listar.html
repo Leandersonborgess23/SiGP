@@ -18,7 +18,14 @@
             <td>{{ usuario.username }}</td>
             <td>{{ usuario.email }}</td>
             <td>
-                <a href="{{ url_for('remover_usuario', id=usuario.id) }}">Remover</a>
+                <!-- Link para editar (GET) -->
+                <a href="{{ url_for('usuarios_edit', id=usuario.id) }}" class="btn btn-primary btn-sm">Editar</a>
+
+                <!-- Formulário para remover (POST + CSRF) -->
+                <form method="POST" action="{{ url_for('usuarios_delete', id=usuario.id) }}" style="display:inline;">
+                    <button type="submit" class="btn btn-danger btn-sm">Remover</button>
+                </form>
+
             </td>
         </tr>
         {% else %}
