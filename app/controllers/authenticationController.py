@@ -1,6 +1,7 @@
 from app.models.usuario import Usuario
 from werkzeug.security import check_password_hash
-from flask_login import login_user
+from flask_login import login_user, logout_user
+
 
 class AuthenticationController:
 
@@ -12,3 +13,7 @@ class AuthenticationController:
             login_user(user, remember=form.remember_me.data)
             return True
         return False
+    
+    @staticmethod
+    def logout():
+        return logout_user()

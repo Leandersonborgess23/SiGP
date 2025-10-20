@@ -21,17 +21,23 @@ def login():
     if formulario.validate_on_submit():
         if AuthenticationController.login(formulario):
             flash("Login realizado com sucesso!", "success")
-            return redirect(url_for("home"))
+            next_page = request.args.get('next')
+            if not next_page:
+                next_page = url_for('home')
+            return redirect(next_page)
+            """return redirect(url_for("home"))"""
         else:
             flash("Usuário ou senha inválidos.", "error")
     return render_template('login.html', title='Login', form=formulario)
 
 
-@app.route("/logout")
+@app.route('/logout')
 def logout():
-    from flask_login import logout_user
-    logout_user()
-    flash("Logout realizado com sucesso!", "info")
+    successo = AuthenticationController.logout()
+    if not successo:
+        flash("Erro ao realizar logout.", "error")
+    else:
+        flash("Logout realizado com sucesso!", "success")
     return redirect(url_for("login"))
 
 
@@ -45,6 +51,7 @@ def cadastrar():
             return redirect(url_for('login'))
         else:
             flash("Erro ao cadastrar o novo usuário.", category='error')
+            return render_template("cadastro.html", form = formulario)
     return render_template("cadastro.html", form=formulario)
 
 
