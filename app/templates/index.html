@@ -1,7 +1,15 @@
 {% extends "base.html" %}
 {% block titulo %}Início - SIGP{% endblock %}
+
 {% block conteudo %}
-<h2>Bem-vindo ao SIGP</h2>
+{% if current_user.is_authenticated %}
+    <h1>Bem-vindo, {{ current_user.username }}!</h1>
+{% else %}
+    <h1>Bem-vindo ao SIGP</h1>
+    <h2>Faça login para acessar todas as funcionalidades.</h2>
+{% endif %}
+
 <p>Gerencie as informações administrativas e operacionais da Prefeitura de Pureza em um só lugar.</p>
 <p>Use o menu acima para navegar entre os módulos do sistema.</p>
 {% endblock %}
+

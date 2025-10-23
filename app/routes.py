@@ -8,6 +8,7 @@ from app.controllers.usuarioController import UsuarioController
 from app.controllers.servidorController import ServidorController
 from app.controllers.secretariaController import SecretariaController
 from app.models import Secretaria, Cargo, Usuario
+from flask_login import current_user
 
 
 
