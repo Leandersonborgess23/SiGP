@@ -7,8 +7,8 @@ from app.controllers.authenticationController import AuthenticationController
 from app.controllers.usuarioController import UsuarioController
 from app.controllers.servidorController import ServidorController
 from app.controllers.secretariaController import SecretariaController
-from app.models import Secretaria, Cargo
-from app.models.usuario import Usuario
+from app.models import Secretaria, Cargo, Usuario
+
 
 
 @app.route("/")
@@ -64,20 +64,17 @@ def listar():
 
 @app.route('/usuarios/<int:id>/edit', methods=['GET', 'POST'])
 def usuarios_edit(id):
-    usuario = db.session.get(Usuario, id)
-    if not usuario:
-        flash('Usuário não encontrado.', 'danger')
-        return redirect(url_for('usuarios_index'))
-
-    form = UsuarioForm(obj=usuario)  # pré-preenche o formulário
+    usuario = Usuario.query.get(id)
+    form = UsuarioForm(obj=usuario)
     if form.validate_on_submit():
-        resultado = UsuarioController.atualizar_usuario(id, form)
-        if resultado:
-            flash('Usuário atualizado com sucesso!', 'success')
-            return redirect(url_for('usuarios_index'))
-        else:
-            flash('Erro ao atualizar usuário.', 'danger')
+        form.populate_obj(usuario)
+        if form.password.data:
+            usuario.password_hash = generate_password_hash(form.password.data)
+        db.session.commit()
+        flash('Usuário atualizado com sucesso!', 'success')
+        return redirect(url_for('listar'))  # ou a rota da lista
     return render_template('edit.html', form=form, usuario=usuario)
+
 
 
 @app.route('/usuarios/<int:id>/delete', methods=['POST'])
