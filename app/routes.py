@@ -8,7 +8,8 @@ from app.controllers.usuarioController import UsuarioController
 from app.controllers.servidorController import ServidorController
 from app.controllers.secretariaController import SecretariaController
 from app.models import Secretaria, Cargo, Usuario
-from flask_login import current_user
+from app.forms.usuarioedit_form import UsuarioEditForm
+#from flask_login import current_user
 
 
 
@@ -66,14 +67,16 @@ def listar():
 @app.route('/usuarios/<int:id>/edit', methods=['GET', 'POST'])
 def usuarios_edit(id):
     usuario = Usuario.query.get(id)
-    form = UsuarioForm(obj=usuario)
+    form = UsuarioEditForm(obj=usuario)
+    print(form.validate_on_submit())
     if form.validate_on_submit():
-        form.populate_obj(usuario)
-        if form.password.data:
-            usuario.password_hash = generate_password_hash(form.password.data)
-        db.session.commit()
-        flash('Usuário atualizado com sucesso!', 'success')
-        return redirect(url_for('listar'))  # ou a rota da lista
+        UsuarioController.atualizar_usuario(id, form)
+        #form.populate_obj(usuario)
+        """if form.password.data:
+            usuario.password_hash = generate_password_hash(form.password.data)"""
+        #db.session.commit()
+        #flash('Usuário atualizado com sucesso!', 'success')
+        return redirect(url_for('listar')) 
     return render_template('edit.html', form=form, usuario=usuario)
 
 

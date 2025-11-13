@@ -41,10 +41,13 @@ class UsuarioController:
     def atualizar_usuario(id, form):
         usuario = db.session.get(Usuario, id)
         if usuario:
-            form.populate_obj(usuario)  # Preenche o objeto com os dados do form
-            db.session.commit()
-            print('Usuário atualizado com sucesso!')
-            return True
+            try:
+                form.populate_obj(usuario)  # Preenche o objeto com os dados do form
+                db.session.commit()
+                print('Usuário atualizado com sucesso!')
+                return True
+            except Exception as e:
+                print(e)
         else:
             print('Usuário não encontrado.')
             return False
