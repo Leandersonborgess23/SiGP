@@ -54,6 +54,23 @@ class UsuarioController:
 
     @staticmethod
     def remover_usuario(id):
+        try:
+            usuario = db.session.get(Usuario, id)
+            if not usuario:
+                print("Usuário não encontrado.")
+                return False
+            db.session.delete(usuario)
+            db.session.commit()
+            print("Usuário removido com sucesso!")
+            return True
+        except Exception as e:
+            db.session.rollback()
+            print("Erro ao remover usuário:", e)
+            return False
+
+
+""" @staticmethod
+    def remover_usuario(id):
         usuario = db.session.get(Usuario, id)
         if usuario:
             db.session.delete(usuario)
@@ -62,4 +79,4 @@ class UsuarioController:
             return True
         else:
             print('Usuário não encontrado.')
-            return False
+            return False"""

@@ -3,6 +3,9 @@ from flask import render_template, redirect, url_for, flash, request
 from app.forms.login_form import LoginForm
 from app.forms.usuario_form import UsuarioForm
 from app.forms.servidor_form import ServidorForm
+from app.forms.cargo_form import CargoForm
+from app.forms.secretaria_form import SecretariaForm
+from app.controllers.cargoController import CargoController
 from app.controllers.authenticationController import AuthenticationController
 from app.controllers.usuarioController import UsuarioController
 from app.controllers.servidorController import ServidorController
@@ -88,7 +91,7 @@ def usuarios_delete(id):
         flash('Usuário excluído com sucesso!', 'success')
     else:
         flash('Erro ao excluir usuário.', 'danger')
-    return redirect(url_for('usuarios_index'))
+    return redirect(url_for('listar'))
 
 """
 @app.route('/remover/<int:id>', methods=['GET'])
@@ -118,18 +121,19 @@ def servidores():
     return render_template("servidores.html", form=form, servidores=lista_servidores)
 
 
-@app.route('/remover_servidor/<int:id>', methods=['GET'])
+@app.route('/remover_servidor/<int:id>/delete', methods=['GET'])
 def remover_servidor(id):
-    ServidorController.remover(id)
-    flash("Servidor removido com sucesso!", "success")
+    sucesso = ServidorController.remover(id)
+    if sucesso:
+        flash("Servidor removido com sucesso!", "success")
+    else:
+        flash("Erro ao remover servidor.", "error")
     return redirect(url_for("servidores"))
 
 
 @app.route('/secretarias', methods=['GET', 'POST'])
 def secretarias():
-    from app.forms.secretaria_form import SecretariaForm
     form = SecretariaForm()
-
     if form.validate_on_submit():
         sucesso = SecretariaController.criar(form)
         if sucesso:
@@ -140,3 +144,37 @@ def secretarias():
 
     lista_secretarias = SecretariaController.listar()
     return render_template("secretarias.html", form=form, secretarias=lista_secretarias)
+
+@app.route('/cargos/<int:id>/delete', methods=['POST'])
+def remover_secretaria(id):
+    sucesso = SecretariaController.remover(id)
+    if sucesso:
+        flash("Secretária removida com sucesso!", "success")
+    else:
+        flash("Erro ao remover secretária.", "error")
+    return redirect(url_for("secretarias"))
+
+
+@app.route('/cargos', methods=['GET', 'POST'])
+def cargos():
+    form = CargoForm()
+    if form.validate_on_submit():
+        sucesso = CargoController.criar(form)
+        if sucesso:
+            flash("Cargo cadastrado com sucesso!", "success")
+            return redirect(url_for("cargos"))
+        else:
+            flash("Erro ao cadastrar cargo.", "error")
+
+    lista_cargos = CargoController.listar()
+    return render_template("cargos.html", form=form, cargos=lista_cargos)
+
+@app.route('/cargos/<int:id>/delete', methods=['POST'])
+def remover_cargo(id):
+    sucesso = CargoController.remover(id)
+    if sucesso:
+        flash("Cargo removido com sucesso!", "success")
+    else:
+        flash("Erro ao remover cargo.", "error")
+    return redirect(url_for("cargos"))
+

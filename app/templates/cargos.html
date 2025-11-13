@@ -1,7 +1,7 @@
 {% extends "base.html" %}
-{% block titulo %}Secretarias - SIGP{% endblock %}
+{% block titulo %}Cargos - SIGP{% endblock %}
 {% block conteudo %}
-<h2>Secretarias</h2>
+<h2>Cargos</h2>
 
 <form method="POST">
     {{ form.hidden_tag() }}
@@ -10,29 +10,30 @@
     <div>{{ form.submit(class="btn") }}</div>
 </form>
 
-<h3>Secretarias Cadastradas</h3>
+<h3>Cargos Cadastrados</h3>
 <table>
     <thead>
         <tr>
+            <th>ID</th>
             <th>Nome</th>
             <th>Descrição</th>
             <th>Ações</th>
         </tr>
     </thead>
     <tbody>
-        {% for s in secretarias %}
+        {% for c in cargos %}
         <tr>
-            <td>{{ s.nome }}</td>
-            <td>{{ s.descricao or '-' }}</td>
+            <td>{{ c.id }}</td>
+            <td>{{ c.nome }}</td>
+            <td>{{ c.descricao or '-' }}</td>
             <td>
-                <form method="POST" action="{{ url_for('remover_secretaria', id=s.id) }}" style="display:inline;">
-                    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                <form method="POST" action="{{ url_for('remover_cargo', id=c.id) }}" style="display:inline;">
                     <button type="submit" class="btn btn-danger btn-sm">Remover</button>
                 </form>
             </td>
         </tr>
         {% else %}
-        <tr><td colspan="3">Nenhuma secretaria cadastrada.</td></tr>
+        <tr><td colspan="4">Nenhum cargo cadastrado.</td></tr>
         {% endfor %}
     </tbody>
 </table>

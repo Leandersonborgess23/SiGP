@@ -36,3 +36,20 @@ class SecretariaController:
     @staticmethod
     def listar():
         return Secretaria.query.all()
+    
+    @staticmethod
+    def remover(id):
+        try:
+            secretaria = Secretaria.query.get(id)
+            if secretaria:
+                db.session.delete(secretaria)
+                db.session.commit()
+                return True
+            else:
+                print("Secretaria não encontrada.")
+                return False
+        except Exception as e:
+            db.session.rollback()
+            print("Erro ao remover secretaria:", e)
+            return False
+
