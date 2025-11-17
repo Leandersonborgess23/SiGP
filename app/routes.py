@@ -5,13 +5,15 @@ from app.forms.usuario_form import UsuarioForm
 from app.forms.servidor_form import ServidorForm
 from app.forms.cargo_form import CargoForm
 from app.forms.secretaria_form import SecretariaForm
+from app.forms.usuarioedit_form import UsuarioEditForm
+from app.forms.secretariaedit_form import SecretariaEditForm
+from app.forms.cargoedit_form import CargoEditForm
 from app.controllers.cargoController import CargoController
 from app.controllers.authenticationController import AuthenticationController
 from app.controllers.usuarioController import UsuarioController
 from app.controllers.servidorController import ServidorController
 from app.controllers.secretariaController import SecretariaController
-from app.models import Secretaria, Cargo, Usuario
-from app.forms.usuarioedit_form import UsuarioEditForm
+from app.models import Secretaria, Cargo, Usuario, Servidor, Prefeitura
 #from flask_login import current_user
 
 
@@ -47,24 +49,25 @@ def logout():
     return redirect(url_for("login"))
 
 
-@app.route('/cadastrar', methods=['GET', 'POST'])
-def cadastrar():
+@app.route('/usuarios/cadastrar', methods=['GET', 'POST'])
+def usuarios_cadastrar():
     formulario = UsuarioForm()
     if formulario.validate_on_submit():
         sucesso = UsuarioController.salvar(formulario)
         if sucesso:
             flash("Usuário cadastrado com sucesso!", category='success')
             return redirect(url_for('login'))
+            """return redirect(url_for('login'))"""
         else:
             flash("Erro ao cadastrar o novo usuário.", category='error')
-            return render_template("cadastro.html", form = formulario)
-    return render_template("cadastro.html", form=formulario)
+            return render_template("usuarios/cadastro.html", form = formulario)
+    return render_template("usuarios/cadastro.html", form=formulario)
 
 
-@app.route('/listar', methods=['GET'])
-def listar():
+@app.route('/usuarios', methods=['GET'])
+def usuarios_listar():
     lista_usuarios = UsuarioController.listar_usuarios()
-    return render_template("listar.html", usuarios=lista_usuarios)
+    return render_template("usuarios/listar.html", usuarios=lista_usuarios)
 
 
 @app.route('/usuarios/<int:id>/edit', methods=['GET', 'POST'])
@@ -79,8 +82,8 @@ def usuarios_edit(id):
             usuario.password_hash = generate_password_hash(form.password.data)"""
         #db.session.commit()
         #flash('Usuário atualizado com sucesso!', 'success')
-        return redirect(url_for('listar')) 
-    return render_template('edit.html', form=form, usuario=usuario)
+        return redirect(url_for('usuarios_listar')) 
+    return render_template('usuarios/edit.html', form=form, usuario=usuario)
 
 
 
@@ -91,7 +94,7 @@ def usuarios_delete(id):
         flash('Usuário excluído com sucesso!', 'success')
     else:
         flash('Erro ao excluir usuário.', 'danger')
-    return redirect(url_for('listar'))
+    return redirect(url_for('usuarios_listar'))
 
 """
 @app.route('/remover/<int:id>', methods=['GET'])
@@ -131,50 +134,86 @@ def remover_servidor(id):
     return redirect(url_for("servidores"))
 
 
-@app.route('/secretarias', methods=['GET', 'POST'])
-def secretarias():
+@app.route('/secretarias/cadastrar', methods=['GET', 'POST'])
+def secretarias_cadastrar():
     form = SecretariaForm()
     if form.validate_on_submit():
         sucesso = SecretariaController.criar(form)
         if sucesso:
             flash("Secretaria cadastrada!", "success")
-            return redirect(url_for("secretarias"))
+            return redirect(url_for("secretarias_listar"))
         else:
             flash("Erro ao cadastrar secretaria.", "error")
+    return render_template("secretarias/cadastro.html", form=form)
 
-    lista_secretarias = SecretariaController.listar()
-    return render_template("secretarias.html", form=form, secretarias=lista_secretarias)
 
-@app.route('/cargos/<int:id>/delete', methods=['POST'])
-def remover_secretaria(id):
-    sucesso = SecretariaController.remover(id)
-    if sucesso:
-        flash("Secretária removida com sucesso!", "success")
+@app.route('/secretarias')
+def secretarias_listar():
+    lista = SecretariaController.listar()
+    return render_template('secretarias/secretarias.html', secretarias=lista)
+
+
+@app.route('/secretarias/<int:id>/editar', methods=['GET', 'POST'])
+def secretarias_editar(id):
+    secretaria = Secretaria.query.get_or_404(id)
+    form = SecretariaEditForm(obj=secretaria)
+    if form.validate_on_submit():
+        if SecretariaController.atualizar(id, form):
+            flash("Secretaria atualizada!", "success")
+            return redirect(url_for('secretarias_listar'))
+        else:
+            flash("Erro ao atualizar.", "error")
+    return render_template("secretarias/edit.html", form=form, secretaria=secretaria)
+
+
+@app.route('/secretarias/<int:id>/delete', methods=['POST'])
+def secretarias_remover(id):
+    if SecretariaController.remover(id):
+        flash("Secretaria removida!", "success")
     else:
-        flash("Erro ao remover secretária.", "error")
-    return redirect(url_for("secretarias"))
+        flash("Erro ao remover secretaria.", "error")
+    return redirect(url_for('secretarias_listar'))
 
 
-@app.route('/cargos', methods=['GET', 'POST'])
-def cargos():
+@app.route('/cargos/cadastrar', methods=['GET', 'POST'])
+def cargos_cadastrar():
     form = CargoForm()
     if form.validate_on_submit():
         sucesso = CargoController.criar(form)
         if sucesso:
             flash("Cargo cadastrado com sucesso!", "success")
-            return redirect(url_for("cargos"))
+            return redirect(url_for("cargos_listar"))
         else:
             flash("Erro ao cadastrar cargo.", "error")
+    return render_template("cargos/cadastro.html", form=form)
 
+
+@app.route('/cargos', methods=['GET'])
+def cargos_listar():
     lista_cargos = CargoController.listar()
-    return render_template("cargos.html", form=form, cargos=lista_cargos)
+    return render_template("cargos/cargos.html", cargos=lista_cargos)
+
+
+@app.route('/cargos/<int:id>/editar', methods=['GET', 'POST'])
+def cargos_editar(id):
+    cargo = Cargo.query.get_or_404(id)
+    form = CargoEditForm(obj=cargo)
+    if form.validate_on_submit():
+        sucesso = CargoController.atualizar(id, form)
+        if sucesso:
+            flash("Cargo atualizado com sucesso!", "success")
+            return redirect(url_for('cargos_listar'))
+        else:
+            flash("Erro ao atualizar cargo.", "error")
+    return render_template("cargos/edit.html", form=form, cargo=cargo)
+
 
 @app.route('/cargos/<int:id>/delete', methods=['POST'])
-def remover_cargo(id):
+def cargos_remover(id):
     sucesso = CargoController.remover(id)
     if sucesso:
         flash("Cargo removido com sucesso!", "success")
     else:
         flash("Erro ao remover cargo.", "error")
-    return redirect(url_for("cargos"))
+    return redirect(url_for('cargos_listar'))
 

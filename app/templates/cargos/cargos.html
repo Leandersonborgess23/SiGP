@@ -3,14 +3,8 @@
 {% block conteudo %}
 <h2>Cargos</h2>
 
-<form method="POST">
-    {{ form.hidden_tag() }}
-    <div>{{ form.nome.label }}<br>{{ form.nome(size=40) }}</div>
-    <div>{{ form.descricao.label }}<br>{{ form.descricao(rows=3, cols=50) }}</div>
-    <div>{{ form.submit(class="btn") }}</div>
-</form>
+<a href="{{ url_for('cargos_cadastrar') }}" class="btn btn-success mb-3">Cadastrar novo Cargo</a>
 
-<h3>Cargos Cadastrados</h3>
 <table>
     <thead>
         <tr>
@@ -27,7 +21,10 @@
             <td>{{ c.nome }}</td>
             <td>{{ c.descricao or '-' }}</td>
             <td>
-                <form method="POST" action="{{ url_for('remover_cargo', id=c.id) }}" style="display:inline;">
+                <a href="{{ url_for('cargos_editar', id=c.id) }}" class="btn btn-primary btn-sm">Editar</a>
+
+                <form method="POST" action="{{ url_for('cargos_remover', id=c.id) }}" style="display:inline;">
+                    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
                     <button type="submit" class="btn btn-danger btn-sm">Remover</button>
                 </form>
             </td>

@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% block titulo %}Editar Secretaria - SIGP{% endblock %}
+{% block conteudo %}
+<h2>Editar Secretaria</h2>
+
+<form method="POST">
+    {{ form.hidden_tag() }}
+
+    <div>
+        {{ form.nome.label }}
+        {{ form.nome(class="form-control") }}
+    </div>
+
+    <div>
+        {{ form.descricao.label }}
+        {{ form.descricao(class="form-control") }}
+    </div>
+
+    <button type="submit" class="btn btn-primary mt-2">Salvar Alterações</button>
+</form>
+
+<a href="{{ url_for('secretarias_listar') }}">Voltar</a>
+
+{% endblock %}
