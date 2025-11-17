@@ -33,10 +33,27 @@ class SecretariaController:
             print("Erro criar secretaria:", e)
             return False
 
+
     @staticmethod
     def listar():
         return Secretaria.query.all()
+        
+
+    @staticmethod
+    def atualizar(id, form):
+        secretaria = Secretaria.query.get(id)
+        if secretaria:
+            try:
+                form.populate_obj(secretaria)
+                db.session.commit()
+                return True
+            except Exception as e:
+                db.session.rollback()
+                print("Erro ao atualizar secretaria:", e)
+                return False
+        return False
     
+
     @staticmethod
     def remover(id):
         try:
@@ -52,4 +69,3 @@ class SecretariaController:
             db.session.rollback()
             print("Erro ao remover secretaria:", e)
             return False
-

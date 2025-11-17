@@ -21,6 +21,20 @@ class CargoController:
         return Cargo.query.all()
 
     @staticmethod
+    def atualizar(id, form):
+        cargo = Cargo.query.get(id)
+        if cargo:
+            try:
+                form.populate_obj(cargo)
+                db.session.commit()
+                return True
+            except Exception as e:
+                db.session.rollback()
+                print("Erro ao atualizar cargo:", e)
+                return False
+        return False
+    
+    @staticmethod
     def remover(id):
         cargo = Cargo.query.get(id)
         if cargo:
