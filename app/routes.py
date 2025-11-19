@@ -104,14 +104,13 @@ def remover_usuario(id):
     return redirect(url_for("listar"))"""
 
 
-@app.route('/servidores', methods=['GET', 'POST'])
-def servidores():
+@app.route('/servidores/cadastrar', methods=['GET', 'POST'])
+def servidores_cadastrar():
     form = ServidorForm()
     cargos = Cargo.query.all()
     secretarias = Secretaria.query.all()
     form.cargo_id.choices = [(c.id, c.nome) for c in cargos]
     form.secretaria_id.choices = [(s.id, s.nome) for s in secretarias]
-
     if form.validate_on_submit():
         sucesso = ServidorController.criar(form)
         if sucesso:
@@ -120,18 +119,41 @@ def servidores():
         else:
             flash("Erro ao cadastrar servidor.", "error")
 
+    return render_template("servidores/cadastro.html", form=form)
+
+
+@app.route('/servidores', methods=['GET'])
+def servidores_listar():
     lista_servidores = ServidorController.listar()
-    return render_template("servidores.html", form=form, servidores=lista_servidores)
+    return render_template("servidores/servidores.html", servidores=lista_servidores) 
 
 
-@app.route('/remover_servidor/<int:id>/delete', methods=['GET'])
-def remover_servidor(id):
+@app.route('/servidores/<int:id>/editar', methods=['GET', 'POST'])
+def servidores_editar(id):
+    servidor = Servidor.query.get(id)
+    if not servidor:
+        flash("Servidor não encontrado.", "error")
+        return redirect(url_for("servidores_listar"))
+    form = ServidorForm(obj=servidor)
+    cargos = Cargo.query.all()
+    secretarias = Secretaria.query.all()
+    form.cargo_id.choices = [(c.id, c.nome) for c in cargos]
+    form.secretaria_id.choices = [(s.id, s.nome) for s in secretarias]
+    if form.validate_on_submit():
+        ServidorController.atualizar(id, form)
+        flash("Servidor atualizado com sucesso!", "success")
+        return redirect(url_for("servidores_listar"))
+    return render_template("servidores/edit.html", form=form, servidor=servidor)
+
+
+@app.route('/servidores/<int:id>/delete', methods=['POST'])
+def servidores_delete(id):
     sucesso = ServidorController.remover(id)
     if sucesso:
         flash("Servidor removido com sucesso!", "success")
     else:
         flash("Erro ao remover servidor.", "error")
-    return redirect(url_for("servidores"))
+    return redirect(url_for("servidores_listar"))
 
 
 @app.route('/secretarias/cadastrar', methods=['GET', 'POST'])

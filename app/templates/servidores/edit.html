@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% block titulo %}Editar Servidor - SIGP{% endblock %}
+{% block conteudo %}
+
+<h2>Editar Servidor</h2>
+
+<form method="POST">
+    {{ form.hidden_tag() }}
+    
+    <div>{{ form.nome.label }}<br>{{ form.nome(size=40) }}</div>
+    <div>{{ form.cpf.label }}<br>{{ form.cpf(size=20) }}</div>
+    <div>{{ form.email.label }}<br>{{ form.email(size=40) }}</div>
+    <div>{{ form.telefone.label }}<br>{{ form.telefone(size=20) }}</div>
+
+    <div>{{ form.cargo_id.label }}<br>{{ form.cargo_id() }}</div>
+    <div>{{ form.secretaria_id.label }}<br>{{ form.secretaria_id() }}</div>
+
+    <div>{{ form.submit(class="btn") }}</div>
+</form>
+
+<a href="{{ url_for('servidores_listar') }}">Voltar</a>
+
+{% endblock %}
