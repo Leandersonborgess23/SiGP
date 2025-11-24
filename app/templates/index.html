@@ -1,96 +1,109 @@
 {% extends "base.html" %}
-{% block titulo %}Início - SIGP{% endblock %}
+{% block titulo %}Dashboard - SIGP{% endblock %}
 
 {% block conteudo %}
 
-<div class="container-fluid">
+<h1 class="h3 mb-4 text-primary fw-bold">
+    <i class="fas fa-home"></i> Dashboard do Sistema
+</h1>
 
-    <!-- Saudação -->
-    <div class="mb-4">
-        {% if current_user.is_authenticated %}
-            <h1 class="h3 text-gray-800">Bem-vindo, {{ current_user.username }}!</h1>
-        {% else %}
-            <h1 class="h3 text-gray-800">Bem-vindo ao SIGP</h1>
-            <h6 class="text-secondary">Faça login para acessar todas as funcionalidades.</h6>
-        {% endif %}
-    </div>
+<div class="row">
 
-    <!-- Cards principais -->
-    <div class="row">
-
-        <!-- Usuários -->
-        <div class="col-xl-3 col-md-6 mb-4">
-            <div class="card border-primary shadow h-100 py-2">
-                <div class="card-body">
-                    <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
-                        Usuários
+    <!-- Card Usuários -->
+    <div class="col-xl-3 col-md-6 mb-4">
+        <div class="card border-left-primary shadow h-100 py-2">
+            <div class="card-body">
+                <div class="row align-items-center">
+                    <div class="col">
+                        <div class="text-xs fw-bold text-primary text-uppercase mb-1">
+                            Usuários
+                        </div>
+                        <div class="h5 mb-0 fw-bold text-gray-800">
+                            {{ total_usuarios }}
+                        </div>
                     </div>
-                    <div class="h5 mb-0 font-weight-bold text-gray-800">Gerenciar</div>
-                </div>
-                <a href="{{ url_for('usuarios_listar') }}" class="card-footer text-primary small text-decoration-none">
-                    Acessar →
-                </a>
-            </div>
-        </div>
-
-        <!-- Servidores -->
-        <div class="col-xl-3 col-md-6 mb-4">
-            <div class="card border-success shadow h-100 py-2">
-                <div class="card-body">
-                    <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
-                        Servidores
+                    <div class="col-auto">
+                        <i class="fas fa-users fa-2x text-primary"></i>
                     </div>
-                    <div class="h5 mb-0 font-weight-bold text-gray-800">Gerenciar</div>
                 </div>
-                <a href="{{ url_for('servidores_listar') }}" class="card-footer text-success small text-decoration-none">
-                    Acessar →
-                </a>
             </div>
-        </div>
-
-        <!-- Secretarias -->
-        <div class="col-xl-3 col-md-6 mb-4">
-            <div class="card border-info shadow h-100 py-2">
-                <div class="card-body">
-                    <div class="text-xs font-weight-bold text-info text-uppercase mb-1">
-                        Secretarias
-                    </div>
-                    <div class="h5 mb-0 font-weight-bold text-gray-800">Gerenciar</div>
-                </div>
-                <a href="{{ url_for('secretarias_listar') }}" class="card-footer text-info small text-decoration-none">
-                    Acessar →
-                </a>
-            </div>
-        </div>
-
-        <!-- Cargos -->
-        <div class="col-xl-3 col-md-6 mb-4">
-            <div class="card border-warning shadow h-100 py-2">
-                <div class="card-body">
-                    <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
-                        Cargos
-                    </div>
-                    <div class="h5 mb-0 font-weight-bold text-gray-800">Gerenciar</div>
-                </div>
-                <a href="{{ url_for('cargos_listar') }}" class="card-footer text-warning small text-decoration-none">
-                    Acessar →
-                </a>
-            </div>
-        </div>
-
-    </div>
-
-    <!-- Texto institucional -->
-    <div class="card shadow mt-3">
-        <div class="card-body">
-            <p class="mb-0 text-secondary">
-                O SIGP permite gerenciar informações administrativas da Prefeitura de Pureza
-                em um único sistema integrado e seguro. Utilize o menu lateral para navegar
-                entre os módulos.
-            </p>
         </div>
     </div>
 
+    <!-- Card Servidores -->
+    <div class="col-xl-3 col-md-6 mb-4">
+        <div class="card border-left-info shadow h-100 py-2">
+            <div class="card-body">
+                <div class="row align-items-center">
+                    <div class="col">
+                        <div class="text-xs fw-bold text-info text-uppercase mb-1">
+                            Servidores
+                        </div>
+                        <div class="h5 mb-0 fw-bold text-gray-800">
+                            {{ total_servidores }}
+                        </div>
+                    </div>
+                    <div class="col-auto">
+                        <i class="fas fa-id-badge fa-2x text-info"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Card Secretarias -->
+    <div class="col-xl-3 col-md-6 mb-4">
+        <div class="card border-left-success shadow h-100 py-2">
+            <div class="card-body">
+                <div class="row align-items-center">
+                    <div class="col">
+                        <div class="text-xs fw-bold text-success text-uppercase mb-1">
+                            Secretarias
+                        </div>
+                        <div class="h5 mb-0 fw-bold text-gray-800">
+                            {{ total_secretarias }}
+                        </div>
+                    </div>
+                    <div class="col-auto">
+                        <i class="fas fa-building fa-2x text-success"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Card Cargos -->
+    <div class="col-xl-3 col-md-6 mb-4">
+        <div class="card border-left-warning shadow h-100 py-2">
+            <div class="card-body">
+                <div class="row align-items-center">
+                    <div class="col">
+                        <div class="text-xs fw-bold text-warning text-uppercase mb-1">
+                            Cargos
+                        </div>
+                        <div class="h5 mb-0 fw-bold text-gray-800">
+                            {{ total_cargos }}
+                        </div>
+                    </div>
+                    <div class="col-auto">
+                        <i class="fas fa-briefcase fa-2x text-warning"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<!-- Texto institucional -->
+<div class="card shadow mt-4">
+    <div class="card-body">
+        <h4 class="text-primary fw-bold">Bem-vindo ao SIGP</h4>
+        <p>
+            O Sistema de Gestão da Prefeitura de Pureza reúne todas as informações administrativas em um único local,
+            facilitando o trabalho dos servidores e promovendo eficiência e organização. Utilize o menu lateral para navegar entre os módulos.
+        </p>
+    </div>
 </div>
 
 {% endblock %}

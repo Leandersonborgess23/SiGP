@@ -8,12 +8,13 @@
              style="max-width: 130px;">
     </div>
 
-    <!-- Menu principal -->
+    {% if current_user.is_authenticated %}
+    <!-- Menu principal (somente se estiver logado) -->
     <ul class="nav nav-pills flex-column mb-auto">
 
         <li class="nav-item">
-            <a href="{{ url_for('home') }}"
-               class="nav-link text-white {% if request.endpoint == 'home' %}active-link{% endif %}">
+            <a href="{{ url_for('dashboard') }}"
+               class="nav-link text-white {% if request.endpoint == 'dashboard' %}active-link{% endif %}">
                 <i class="fa-solid fa-house me-2"></i> Início
             </a>
         </li>
@@ -54,5 +55,7 @@
     <a href="{{ url_for('logout') }}" class="nav-link text-white mt-auto">
         <i class="fa-solid fa-right-from-bracket me-2"></i> Sair
     </a>
+
+    {% endif %}
 
 </nav>

@@ -14,24 +14,27 @@ from app.controllers.usuarioController import UsuarioController
 from app.controllers.servidorController import ServidorController
 from app.controllers.secretariaController import SecretariaController
 from app.models import Secretaria, Cargo, Usuario, Servidor, Prefeitura
-#from flask_login import current_user
+from flask_login import current_user, login_required
 
 
 
 @app.route("/")
+@login_required
 def home():
-    return render_template("index.html")
+    return render_template("login")
 
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
+    if current_user.is_authenticated:
+        return redirect(url_for('dashboard'))
     formulario = LoginForm()
     if formulario.validate_on_submit():
         if AuthenticationController.login(formulario):
             flash("Login realizado com sucesso!", "success")
             next_page = request.args.get('next')
             if not next_page:
-                next_page = url_for('home')
+                next_page = url_for('dashboard')
             return redirect(next_page)
             """return redirect(url_for("home"))"""
         else:
@@ -40,6 +43,7 @@ def login():
 
 
 @app.route('/logout')
+@login_required
 def logout():
     successo = AuthenticationController.logout()
     if not successo:
@@ -50,6 +54,7 @@ def logout():
 
 
 @app.route('/usuarios/cadastrar', methods=['GET', 'POST'])
+@login_required
 def usuarios_cadastrar():
     formulario = UsuarioForm()
     if formulario.validate_on_submit():
@@ -65,12 +70,14 @@ def usuarios_cadastrar():
 
 
 @app.route('/usuarios', methods=['GET'])
+@login_required
 def usuarios_listar():
     lista_usuarios = UsuarioController.listar_usuarios()
     return render_template("usuarios/listar.html", usuarios=lista_usuarios)
 
 
 @app.route('/usuarios/<int:id>/edit', methods=['GET', 'POST'])
+@login_required
 def usuarios_edit(id):
     usuario = Usuario.query.get(id)
     form = UsuarioEditForm(obj=usuario)
@@ -88,6 +95,7 @@ def usuarios_edit(id):
 
 
 @app.route('/usuarios/<int:id>/delete', methods=['POST'])
+@login_required
 def usuarios_delete(id):
     resultado = UsuarioController.remover_usuario(id)
     if resultado:
@@ -105,6 +113,7 @@ def remover_usuario(id):
 
 
 @app.route('/servidores/cadastrar', methods=['GET', 'POST'])
+@login_required
 def servidores_cadastrar():
     form = ServidorForm()
     cargos = Cargo.query.all()
@@ -123,12 +132,14 @@ def servidores_cadastrar():
 
 
 @app.route('/servidores', methods=['GET'])
+@login_required
 def servidores_listar():
     lista_servidores = ServidorController.listar()
     return render_template("servidores/servidores.html", servidores=lista_servidores) 
 
 
 @app.route('/servidores/<int:id>/editar', methods=['GET', 'POST'])
+@login_required
 def servidores_editar(id):
     servidor = Servidor.query.get(id)
     if not servidor:
@@ -147,6 +158,7 @@ def servidores_editar(id):
 
 
 @app.route('/servidores/<int:id>/delete', methods=['POST'])
+@login_required
 def servidores_delete(id):
     sucesso = ServidorController.remover(id)
     if sucesso:
@@ -157,6 +169,7 @@ def servidores_delete(id):
 
 
 @app.route('/secretarias/cadastrar', methods=['GET', 'POST'])
+@login_required
 def secretarias_cadastrar():
     form = SecretariaForm()
     if form.validate_on_submit():
@@ -170,12 +183,14 @@ def secretarias_cadastrar():
 
 
 @app.route('/secretarias')
+@login_required
 def secretarias_listar():
     lista = SecretariaController.listar()
     return render_template('secretarias/secretarias.html', secretarias=lista)
 
 
 @app.route('/secretarias/<int:id>/editar', methods=['GET', 'POST'])
+@login_required
 def secretarias_editar(id):
     secretaria = Secretaria.query.get_or_404(id)
     form = SecretariaEditForm(obj=secretaria)
@@ -189,6 +204,7 @@ def secretarias_editar(id):
 
 
 @app.route('/secretarias/<int:id>/delete', methods=['POST'])
+@login_required
 def secretarias_delete(id):
     if SecretariaController.remover(id):
         flash("Secretaria removida!", "success")
@@ -198,6 +214,7 @@ def secretarias_delete(id):
 
 
 @app.route('/cargos/cadastrar', methods=['GET', 'POST'])
+@login_required
 def cargos_cadastrar():
     form = CargoForm()
     if form.validate_on_submit():
@@ -211,12 +228,14 @@ def cargos_cadastrar():
 
 
 @app.route('/cargos', methods=['GET'])
+@login_required
 def cargos_listar():
     lista_cargos = CargoController.listar()
     return render_template("cargos/cargos.html", cargos=lista_cargos)
 
 
 @app.route('/cargos/<int:id>/editar', methods=['GET', 'POST'])
+@login_required
 def cargos_editar(id):
     cargo = Cargo.query.get_or_404(id)
     form = CargoEditForm(obj=cargo)
@@ -231,6 +250,7 @@ def cargos_editar(id):
 
 
 @app.route('/cargos/<int:id>/delete', methods=['POST'])
+@login_required
 def cargos_delete(id):
     sucesso = CargoController.remover(id)
     if sucesso:
@@ -239,3 +259,18 @@ def cargos_delete(id):
         flash("Erro ao remover cargo.", "error")
     return redirect(url_for('cargos_listar'))
 
+
+@app.route("/dashboard")
+def dashboard():
+    total_usuarios = Usuario.query.count()
+    total_servidores = Servidor.query.count()
+    total_secretarias = Secretaria.query.count()
+    total_cargos = Cargo.query.count()
+
+    return render_template(
+        "index.html",
+        total_usuarios=total_usuarios,
+        total_servidores=total_servidores,
+        total_secretarias=total_secretarias,
+        total_cargos=total_cargos
+    )
