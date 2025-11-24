@@ -1,23 +1,36 @@
 {% extends "base.html" %}
 {% block titulo %}Cadastrar Secretaria - SIGP{% endblock %}
+
 {% block conteudo %}
-<h2>Cadastrar Secretaria</h2>
 
-<form method="POST">
-    {{ form.hidden_tag() }}
+<h3 class="text-primary"><i class="fa-solid fa-plus me-2"></i>Nova Secretaria</h3>
 
-    <div>
-        {{ form.nome.label }}
-        {{ form.nome(class="form-control") }}
+<div class="card shadow mt-3">
+    <div class="card-body">
+
+        <form method="POST">
+            {{ form.hidden_tag() }}
+
+            <div class="mb-3">
+                {{ form.nome.label(class="form-label") }}
+                {{ form.nome(class="form-control") }}
+            </div>
+
+            <div class="mb-3">
+                {{ form.descricao.label(class="form-label") }}
+                {{ form.descricao(class="form-control", rows="3") }}
+            </div>
+
+            <button type="submit" class="btn btn-primary">
+                <i class="fa-solid fa-check me-1"></i> Salvar
+            </button>
+
+            <a href="{{ url_for('secretarias_listar') }}" class="btn btn-secondary ms-2">
+                Voltar
+            </a>
+        </form>
+
     </div>
+</div>
 
-    <div>
-        {{ form.descricao.label }}
-        {{ form.descricao(class="form-control") }}
-    </div>
-
-    <button type="submit" class="btn btn-primary mt-2">Cadastrar</button>
-</form>
-
-<p><a href="{{ url_for('secretarias_listar') }}">Voltar</a></p>
 {% endblock %}

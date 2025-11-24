@@ -1,41 +1,66 @@
 {% extends "base.html" %}
 {% block titulo %}Servidores - SIGP{% endblock %}
+
 {% block conteudo %}
 
-<h2>Servidores</h2>
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <h3 class="text-primary"><i class="fa-solid fa-users-gear me-2"></i>Servidores</h3>
 
-<a href="{{ url_for('servidores_cadastrar') }}" class="btn">Cadastrar Servidor</a>
+    <a href="{{ url_for('servidores_cadastrar') }}" class="btn btn-primary">
+        <i class="fa-solid fa-user-plus me-1"></i> Novo Servidor
+    </a>
+</div>
 
-<h3>Servidores Cadastrados</h3>
+<div class="card shadow">
+    <div class="card-body">
 
-<table>
-    <thead>
-        <tr>
-            <th>Nome</th>
-            <th>CPF</th>
-            <th>Cargo</th>
-            <th>Secretaria</th>
-            <th>Ações</th>
-        </tr>
-    </thead>
-    <tbody>
-        {% for s in servidores %}
-        <tr>
-            <td>{{ s.nome }}</td>
-            <td>{{ s.cpf or '-' }}</td>
-            <td>{{ s.cargo.nome if s.cargo else '-' }}</td>
-            <td>{{ s.secretaria.nome if s.secretaria else '-' }}</td>
-            <td>
-                <a href="{{ url_for('servidores_editar', id=s.id) }}">Editar</a> |
-                <form action="{{ url_for('servidores_delete', id=s.id) }}" method="POST" style="display:inline;">
-                    <button type="submit" onclick="return confirm('Remover este servidor?')">Remover</button>
-                </form>
-            </td>
-        </tr>
-        {% else %}
-        <tr><td colspan="5">Nenhum servidor cadastrado.</td></tr>
-        {% endfor %}
-    </tbody>
-</table>
+        <table class="table table-hover align-middle">
+            <thead class="table-primary">
+                <tr>
+                    <th>Nome</th>
+                    <th>CPF</th>
+                    <th>Email</th>
+                    <th>Cargo</th>
+                    <th>Secretaria</th>
+                    <th class="text-end">Ações</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                {% for s in servidores %}
+                <tr>
+                    <td>{{ s.nome }}</td>
+                    <td>{{ s.cpf }}</td>
+                    <td>{{ s.email }}</td>
+                    <td>{{ s.cargo.nome if s.cargo else '-' }}</td>
+                    <td>{{ s.secretaria.nome if s.secretaria else '-' }}</td>
+
+                    <td class="text-end">
+
+                        <a href="{{ url_for('servidores_editar', id=s.id) }}" 
+                           class="btn btn-sm btn-warning me-2">
+                            <i class="fa-solid fa-pen"></i>
+                        </a>
+
+                        <a href="{{ url_for('servidores_delete', id=s.id) }}"
+                           class="btn btn-sm btn-danger">
+                            <i class="fa-solid fa-trash"></i>
+                        </a>
+
+                    </td>
+                </tr>
+
+                {% else %}
+                <tr>
+                    <td colspan="6" class="text-center text-muted">
+                        Nenhum servidor cadastrado.
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+
+        </table>
+    </div>
+</div>
 
 {% endblock %}

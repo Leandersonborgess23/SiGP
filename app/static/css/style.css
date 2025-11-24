@@ -1,61 +1,59 @@
-body {
-    font-family: Arial, sans-serif;
-    margin: 0;
-    background: #f6f8fa;
-    color: #222;
+/* Tema azul da Prefeitura de Pureza */
+:root {
+    --sigp-blue: #0d6efd;   /* azul bootstrap */
+    --sigp-blue-dark: #0a58ca;
 }
 
-header {
-    background: #004d99;
-    color: white;
-    padding: 15px;
+/* Sidebar */
+#sidebar {
+    background-color: var(--sigp-blue);
 }
 
-header h1 {
-    margin: 0;
+#sidebar .nav-link:hover {
+    background: var(--sigp-blue-dark);
 }
 
-nav a {
-    color: white;
-    margin-right: 15px;
-    text-decoration: none;
+/* Layout com sidebar recolhível */
+#sidebar.collapsed {
+    width: 70px;
+    transition: 0.3s;
 }
 
-nav a:hover {
-    text-decoration: underline;
+#sidebar.collapsed .nav-link span {
+    display: none;
 }
 
-main {
-    padding: 20px;
+.card {
+    border-radius: 12px;
 }
 
-table {
-    border-collapse: collapse;
-    width: 100%;
-    margin-top: 15px;
-    background: white;
+/* Remove fundo branco e deixa destaque suave */
+.active-link {
+    background-color: rgba(255, 255, 255, 0.25) !important;
+    border-radius: 6px;
+    font-weight: 600;
 }
 
-th, td {
-    border: 1px solid #ccc;
-    padding: 8px;
-    text-align: left;
+#sidebar img {
+    max-width: 90px !important;
+    height: auto;
 }
 
-th {
-    background: #e8e8e8;
+/* Sidebar */
+#sidebar {
+    width: 240px;
+    transition: all .3s ease;
 }
 
-.mensagens p.success { color: green; }
-.mensagens p.error { color: red; }
-.mensagens p.info { color: blue; }
-.btn {
-    background: #004d99;
-    color: white;
-    border: none;
-    padding: 6px 12px;
-    cursor: pointer;
+#sidebar.collapsed {
+    width: 0;
+    padding: 0;
+    opacity: 0;
+    overflow: hidden;
 }
-.btn:hover {
-    background: #0066cc;
+
+/* Link ativo */
+.active-link {
+    background-color: rgba(255, 255, 255, 0.2) !important;
+    border-radius: 6px;
 }

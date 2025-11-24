@@ -1,0 +1,58 @@
+<nav id="sidebar" class="bg-primary vh-100 d-flex flex-column p-3">
+
+    <!-- Logo no topo -->
+    <div class="text-center mb-4">
+        <img src="{{ url_for('static', filename='img/prefeitura-logo.png') }}"
+             alt="Logo Prefeitura"
+             class="img-fluid rounded"
+             style="max-width: 130px;">
+    </div>
+
+    <!-- Menu principal -->
+    <ul class="nav nav-pills flex-column mb-auto">
+
+        <li class="nav-item">
+            <a href="{{ url_for('home') }}"
+               class="nav-link text-white {% if request.endpoint == 'home' %}active-link{% endif %}">
+                <i class="fa-solid fa-house me-2"></i> Início
+            </a>
+        </li>
+
+        <li>
+            <a href="{{ url_for('usuarios_listar') }}"
+               class="nav-link text-white {% if 'usuarios' in request.endpoint %}active-link{% endif %}">
+                <i class="fa-solid fa-users me-2"></i> Usuários
+            </a>
+        </li>
+
+        <li>
+            <a href="{{ url_for('servidores_listar') }}"
+               class="nav-link text-white {% if 'servidores' in request.endpoint %}active-link{% endif %}">
+                <i class="fa-solid fa-id-card me-2"></i> Servidores
+            </a>
+        </li>
+
+        <li>
+            <a href="{{ url_for('secretarias_listar') }}"
+               class="nav-link text-white {% if 'secretarias' in request.endpoint %}active-link{% endif %}">
+                <i class="fa-solid fa-building-columns me-2"></i> Secretarias
+            </a>
+        </li>
+
+        <li>
+            <a href="{{ url_for('cargos_listar') }}"
+               class="nav-link text-white {% if 'cargos' in request.endpoint %}active-link{% endif %}">
+                <i class="fa-solid fa-briefcase me-2"></i> Cargos
+            </a>
+        </li>
+
+    </ul>
+
+    <hr class="text-white">
+
+    <!-- Sair -->
+    <a href="{{ url_for('logout') }}" class="nav-link text-white mt-auto">
+        <i class="fa-solid fa-right-from-bracket me-2"></i> Sair
+    </a>
+
+</nav>

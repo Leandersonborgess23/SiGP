@@ -189,7 +189,7 @@ def secretarias_editar(id):
 
 
 @app.route('/secretarias/<int:id>/delete', methods=['POST'])
-def secretarias_remover(id):
+def secretarias_delete(id):
     if SecretariaController.remover(id):
         flash("Secretaria removida!", "success")
     else:
@@ -231,7 +231,7 @@ def cargos_editar(id):
 
 
 @app.route('/cargos/<int:id>/delete', methods=['POST'])
-def cargos_remover(id):
+def cargos_delete(id):
     sucesso = CargoController.remover(id)
     if sucesso:
         flash("Cargo removido com sucesso!", "success")

@@ -1,38 +1,58 @@
 {% extends "base.html" %}
 {% block titulo %}Usuários - SIGP{% endblock %}
-{% block conteudo %}
-<h2>Lista de Usuários</h2>
-<table>
-    <thead>
-        <tr>
-            <th>ID</th>
-            <th>Nome de Usuário</th>
-            <th>Email</th>
-            <th>Ações</th>
-        </tr>
-    </thead>
-    <tbody>
-        {% for usuario in usuarios %}
-        <tr>
-            <td>{{ usuario.id }}</td>
-            <td>{{ usuario.username }}</td>
-            <td>{{ usuario.email }}</td>
-            <td>
-                <!-- Link para editar -->
-                <a href="{{ url_for('usuarios_edit', id=usuario.id) }}" class="btn btn-primary btn-sm">Editar</a>
 
-                <!-- Form de remoção (com CSRF token) -->
-                <form method="POST" action="{{ url_for('usuarios_delete', id=usuario.id) }}" style="display:inline;">
-                    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
-                    <button type="submit" class="btn btn-danger btn-sm">Remover</button>
-                </form>
-            </td>
-        </tr>
-        {% else %}
-        <tr>
-            <td colspan="4">Nenhum usuário cadastrado.</td>
-        </tr>
-        {% endfor %}
-    </tbody>
-</table>
+{% block conteudo %}
+
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <h3 class="text-primary"><i class="fa-solid fa-users me-2"></i>Usuários</h3>
+    <a href="{{ url_for('usuarios_cadastrar') }}" class="btn btn-primary">
+        <i class="fa-solid fa-user-plus me-1"></i> Novo Usuário
+    </a>
+</div>
+
+<div class="card shadow">
+    <div class="card-body">
+
+        <table class="table table-hover align-middle">
+            <thead class="table-primary">
+                <tr>
+                    <th>ID</th>
+                    <th>Usuário</th>
+                    <th>Email</th>
+                    <th></th>
+                </tr>
+            </thead>
+
+            <tbody>
+                {% for u in usuarios %}
+                <tr>
+                    <td>{{ u.id }}</td>
+                    <td>{{ u.username }}</td>
+                    <td>{{ u.email }}</td>
+
+                    <td class="text-end">
+                        <a href="{{ url_for('usuarios_edit', id=u.id) }}" 
+                           class="btn btn-sm btn-warning me-2">
+                            <i class="fa-solid fa-pen"></i>
+                        </a>
+
+                        <a href="{{ url_for('usuarios_delete', id=u.id) }}"
+                           class="btn btn-sm btn-danger">
+                            <i class="fa-solid fa-trash"></i>
+                        </a>
+                    </td>
+                </tr>
+                {% else %}
+                <tr>
+                    <td colspan="4" class="text-center text-muted">
+                        Nenhum usuário cadastrado.
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+    </div>
+</div>
+
 {% endblock %}

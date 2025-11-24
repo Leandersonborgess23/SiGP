@@ -2,14 +2,95 @@
 {% block titulo %}Início - SIGP{% endblock %}
 
 {% block conteudo %}
-{% if current_user.is_authenticated %}
-    <h1>Bem-vindo, {{ current_user.username }}!</h1>
-{% else %}
-    <h1>Bem-vindo ao SIGP</h1>
-    <h2>Faça login para acessar todas as funcionalidades.</h2>
-{% endif %}
 
-<p>Gerencie as informações administrativas e operacionais da Prefeitura de Pureza em um só lugar.</p>
-<p>Use o menu acima para navegar entre os módulos do sistema.</p>
+<div class="container-fluid">
+
+    <!-- Saudação -->
+    <div class="mb-4">
+        {% if current_user.is_authenticated %}
+            <h1 class="h3 text-gray-800">Bem-vindo, {{ current_user.username }}!</h1>
+        {% else %}
+            <h1 class="h3 text-gray-800">Bem-vindo ao SIGP</h1>
+            <h6 class="text-secondary">Faça login para acessar todas as funcionalidades.</h6>
+        {% endif %}
+    </div>
+
+    <!-- Cards principais -->
+    <div class="row">
+
+        <!-- Usuários -->
+        <div class="col-xl-3 col-md-6 mb-4">
+            <div class="card border-primary shadow h-100 py-2">
+                <div class="card-body">
+                    <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                        Usuários
+                    </div>
+                    <div class="h5 mb-0 font-weight-bold text-gray-800">Gerenciar</div>
+                </div>
+                <a href="{{ url_for('usuarios_listar') }}" class="card-footer text-primary small text-decoration-none">
+                    Acessar →
+                </a>
+            </div>
+        </div>
+
+        <!-- Servidores -->
+        <div class="col-xl-3 col-md-6 mb-4">
+            <div class="card border-success shadow h-100 py-2">
+                <div class="card-body">
+                    <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
+                        Servidores
+                    </div>
+                    <div class="h5 mb-0 font-weight-bold text-gray-800">Gerenciar</div>
+                </div>
+                <a href="{{ url_for('servidores_listar') }}" class="card-footer text-success small text-decoration-none">
+                    Acessar →
+                </a>
+            </div>
+        </div>
+
+        <!-- Secretarias -->
+        <div class="col-xl-3 col-md-6 mb-4">
+            <div class="card border-info shadow h-100 py-2">
+                <div class="card-body">
+                    <div class="text-xs font-weight-bold text-info text-uppercase mb-1">
+                        Secretarias
+                    </div>
+                    <div class="h5 mb-0 font-weight-bold text-gray-800">Gerenciar</div>
+                </div>
+                <a href="{{ url_for('secretarias_listar') }}" class="card-footer text-info small text-decoration-none">
+                    Acessar →
+                </a>
+            </div>
+        </div>
+
+        <!-- Cargos -->
+        <div class="col-xl-3 col-md-6 mb-4">
+            <div class="card border-warning shadow h-100 py-2">
+                <div class="card-body">
+                    <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
+                        Cargos
+                    </div>
+                    <div class="h5 mb-0 font-weight-bold text-gray-800">Gerenciar</div>
+                </div>
+                <a href="{{ url_for('cargos_listar') }}" class="card-footer text-warning small text-decoration-none">
+                    Acessar →
+                </a>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Texto institucional -->
+    <div class="card shadow mt-3">
+        <div class="card-body">
+            <p class="mb-0 text-secondary">
+                O SIGP permite gerenciar informações administrativas da Prefeitura de Pureza
+                em um único sistema integrado e seguro. Utilize o menu lateral para navegar
+                entre os módulos.
+            </p>
+        </div>
+    </div>
+
+</div>
+
 {% endblock %}
-

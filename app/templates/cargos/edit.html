@@ -1,14 +1,36 @@
 {% extends "base.html" %}
 {% block titulo %}Editar Cargo - SIGP{% endblock %}
+
 {% block conteudo %}
-<h2>Editar Cargo</h2>
 
-<form method="POST">
-    {{ form.hidden_tag() }}
-    <div>{{ form.nome.label }}<br>{{ form.nome(class="form-control") }}</div>
-    <div>{{ form.descricao.label }}<br>{{ form.descricao(class="form-control") }}</div>
-    <div class="mt-2">{{ form.submit(class="btn btn-primary") }}</div>
-</form>
+<h3 class="text-primary"><i class="fa-solid fa-pen-to-square me-2"></i>Editar Cargo</h3>
 
-<p><a href="{{ url_for('cargos_listar') }}">Voltar</a></p>
+<div class="card shadow mt-3">
+    <div class="card-body">
+
+        <form method="POST">
+            {{ form.hidden_tag() }}
+
+            <div class="mb-3">
+                {{ form.nome.label(class="form-label") }}
+                {{ form.nome(class="form-control") }}
+            </div>
+
+            <div class="mb-3">
+                {{ form.descricao.label(class="form-label") }}
+                {{ form.descricao(class="form-control", rows="3") }}
+            </div>
+
+            <button type="submit" class="btn btn-primary">
+                <i class="fa-solid fa-save me-1"></i> Atualizar
+            </button>
+
+            <a href="{{ url_for('cargos_listar') }}" class="btn btn-secondary ms-2">
+                Cancelar
+            </a>
+        </form>
+
+    </div>
+</div>
+
 {% endblock %}
