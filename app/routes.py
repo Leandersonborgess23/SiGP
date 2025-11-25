@@ -17,14 +17,14 @@ from app.models import Secretaria, Cargo, Usuario, Servidor, Prefeitura
 from flask_login import current_user, login_required
 
 
-
+"""
 @app.route("/")
-@login_required
 def home():
-    return render_template("login")
+    form = LoginForm()
+    return render_template("login.html", form=form)"""
 
 
-@app.route('/login', methods=['GET', 'POST'])
+@app.route('/', methods=['GET', 'POST'])
 def login():
     if current_user.is_authenticated:
         return redirect(url_for('dashboard'))
