@@ -124,7 +124,7 @@ def servidores_cadastrar():
         sucesso = ServidorController.criar(form)
         if sucesso:
             flash("Servidor cadastrado com sucesso!", "success")
-            return redirect(url_for("servidores"))
+            return redirect(url_for("servidores_listar"))
         else:
             flash("Erro ao cadastrar servidor.", "error")
 
@@ -261,16 +261,38 @@ def cargos_delete(id):
 
 
 @app.route("/dashboard")
+@login_required
 def dashboard():
     total_usuarios = Usuario.query.count()
     total_servidores = Servidor.query.count()
     total_secretarias = Secretaria.query.count()
     total_cargos = Cargo.query.count()
+    ultimos_usuarios = Usuario.query.order_by(Usuario.id.desc()).limit(5).all()
+    ultimos_servidores = Servidor.query.order_by(Servidor.id.desc()).limit(5).all()
+
+    # Dados para gráficos
+    servidores_por_secretaria = (
+        db.session.query(Secretaria.nome, db.func.count(Servidor.id))
+        .join(Servidor, Servidor.secretaria_id == Secretaria.id)
+        .group_by(Secretaria.nome)
+        .all()
+    )
+
+    cargos_distribuicao = (
+        db.session.query(Cargo.nome, db.func.count(Servidor.id))
+        .join(Servidor, Servidor.cargo_id == Cargo.id)
+        .group_by(Cargo.nome)
+        .all()
+    )
 
     return render_template(
         "index.html",
         total_usuarios=total_usuarios,
         total_servidores=total_servidores,
         total_secretarias=total_secretarias,
-        total_cargos=total_cargos
+        total_cargos=total_cargos,
+        servidores_por_secretaria=servidores_por_secretaria,
+        cargos_distribuicao=cargos_distribuicao,
+        ultimos_usuarios=ultimos_usuarios,
+        ultimos_servidores=ultimos_servidores
     )
