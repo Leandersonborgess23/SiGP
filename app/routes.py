@@ -10,11 +10,13 @@ from app.forms.secretariaedit_form import SecretariaEditForm
 from app.forms.cargoedit_form import CargoEditForm
 from app.forms.perfil_form import PerfilForm
 from app.forms.alterarsenha_form import AlterarSenhaForm
+from app.forms.noticia_form import NoticiaForm
 from app.controllers.cargoController import CargoController
 from app.controllers.authenticationController import AuthenticationController
 from app.controllers.usuarioController import UsuarioController
 from app.controllers.servidorController import ServidorController
 from app.controllers.secretariaController import SecretariaController
+from app.controllers.noticiaController import NoticiaController
 from app.models import Secretaria, Cargo, Usuario, Servidor, Prefeitura, Atividade
 from app.utils.log import registrar_atividade
 from flask_login import current_user, login_required
@@ -353,6 +355,45 @@ def cargos_delete(id):
     return redirect(url_for('cargos_listar'))
 
 
+@app.route("/noticias/cadastrar", methods=["GET", "POST"])
+@login_required
+@requires_roles("admin", "gestor")
+def noticias_cadastrar():
+    form = NoticiaForm()
+    if form.validate_on_submit():
+        NoticiaController.criar(form)
+        flash("Notícia publicada!", "success")
+        registrar_atividade(f"Notícia publicada: {form.titulo.data}")
+        return redirect(url_for("noticias_listar"))
+    return render_template("noticias/cadastro.html", form=form)
+
+
+@app.route("/noticias")
+@login_required
+def noticias_listar():
+    lista = NoticiaController.listar()
+    return render_template("noticias/noticia.html", noticias=lista)
+
+
+@app.route("/noticias/<int:id>/delete", methods=["POST"])
+@login_required
+@requires_roles("admin")
+def noticias_delete(id):
+    NoticiaController.remover(id)
+    registrar_atividade(f"Noticia ID {id} removido.")
+    flash("Notícia removida!", "success")
+    return redirect(url_for("noticias_listar"))
+
+
+@app.route("/atividades")
+@login_required
+@requires_roles("admin")  
+def atividades_listar():
+    from app.controllers.atividadeController import AtividadeController
+    atividades = AtividadeController.listar_todas()
+    return render_template("atividades/atividade.html", atividades=atividades)
+
+
 @app.route("/dashboard")
 @login_required
 def dashboard():
@@ -363,6 +404,7 @@ def dashboard():
     ultimos_usuarios = Usuario.query.order_by(Usuario.id.desc()).limit(5).all()
     ultimos_servidores = Servidor.query.order_by(Servidor.id.desc()).limit(5).all()
     atividades = Atividade.query.order_by(Atividade.data.desc()).limit(10).all()
+    noticias = NoticiaController.listar(limit=5)
 
 
     # Dados para gráficos
@@ -390,5 +432,6 @@ def dashboard():
         cargos_distribuicao=cargos_distribuicao,
         ultimos_usuarios=ultimos_usuarios,
         ultimos_servidores=ultimos_servidores,
-        atividades=atividades
+        atividades=atividades,
+        noticias=noticias
     )

@@ -221,10 +221,21 @@
                 <h6 class="m-0 font-weight-bold text-dark">Notícias da Prefeitura</h6>
             </div>
             <div class="card-body">
-                <ul>
-                    <li>📌 Vacinação contra gripe inicia nesta segunda-feira.</li>
-                    <li>📌 Prefeitura inaugura nova praça no Centro.</li>
-                    <li>📌 Audiência pública marcada para 20/04.</li>
+                <ul class="list-group">
+
+                    {% if noticias %}
+                        {% for n in noticias %}
+                            <li class="list-group-item">
+                                <strong>📌 {{ n.titulo }}</strong><br>
+                                <small class="text-muted">{{ n.data.strftime('%d/%m/%Y') }}</small>
+                            </li>
+                        {% endfor %}
+                    {% else %}
+                        <li class="list-group-item text-muted">
+                            Nenhuma notícia publicada.
+                        </li>
+                    {% endif %}
+
                 </ul>
             </div>
         </div>

@@ -60,6 +60,23 @@
         </li>
         {% endif %}
 
+        <li>
+            <a href="{{ url_for('noticias_listar') }}"
+               class="nav-link text-white {% if 'noticias' in request.endpoint %}active-link{% endif %}">
+                <i class="fa-solid fa-newspaper me-2"></i> Notícias
+            </a>
+        </li>
+
+        {% if current_user.role == 'admin' %}
+        <li>
+            <a href="{{ url_for('atividades_listar') }}"
+            class="nav-link text-white {% if 'atividades' in request.endpoint %}active-link{% endif %}">
+                <i class="fa-solid fa-clock-rotate-left me-2"></i> Atividades
+            </a>
+        </li>
+        {% endif %}
+
+
     </ul>
 
     <hr class="text-white">
