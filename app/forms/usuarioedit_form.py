@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, SubmitField, IntegerField
+from wtforms import StringField, SubmitField, IntegerField, SelectField
 from wtforms.validators import DataRequired, Email
 from app.controllers.usuarioController import UsuarioController
 from wtforms import ValidationError
@@ -10,6 +10,14 @@ class UsuarioEditForm(FlaskForm):
     id = IntegerField()
     username = StringField('Nome de Usuário', validators=[DataRequired()])
     email = StringField('Email', validators=[DataRequired(), Email()])
+    role = SelectField("Nível de Acesso",
+    choices=[
+        ("admin", "Administrador"),
+        ("gestor", "Gestor / Secretário"),
+        ("operador", "Operador"),
+        ("servidor", "Servidor"),
+    ],
+    default="operador")
     submit = SubmitField('Salvar Alterações')
 
     def validate_username(self, field):

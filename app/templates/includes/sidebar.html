@@ -19,33 +19,46 @@
             </a>
         </li>
 
+        <!-- Usuários (somente admin) -->
+        {% if current_user.role == 'admin' %}
         <li>
             <a href="{{ url_for('usuarios_listar') }}"
-               class="nav-link text-white {% if 'usuarios' in request.endpoint %}active-link{% endif %}">
+            class="nav-link text-white {% if 'usuarios' in request.endpoint %}active-link{% endif %}">
                 <i class="fa-solid fa-users me-2"></i> Usuários
             </a>
         </li>
+        {% endif %}
 
+
+        <!-- Servidores (todos podem ver) -->
         <li>
             <a href="{{ url_for('servidores_listar') }}"
-               class="nav-link text-white {% if 'servidores' in request.endpoint %}active-link{% endif %}">
+            class="nav-link text-white {% if 'servidores' in request.endpoint %}active-link{% endif %}">
                 <i class="fa-solid fa-id-card me-2"></i> Servidores
             </a>
         </li>
 
+
+        <!-- Secretarias (gestor e admin) -->
+        {% if current_user.role in ['admin', 'gestor'] %}
         <li>
             <a href="{{ url_for('secretarias_listar') }}"
-               class="nav-link text-white {% if 'secretarias' in request.endpoint %}active-link{% endif %}">
+            class="nav-link text-white {% if 'secretarias' in request.endpoint %}active-link{% endif %}">
                 <i class="fa-solid fa-building-columns me-2"></i> Secretarias
             </a>
         </li>
+        {% endif %}
 
+
+        <!-- Cargos (gestor e admin) -->
+        {% if current_user.role in ['admin', 'gestor'] %}
         <li>
             <a href="{{ url_for('cargos_listar') }}"
-               class="nav-link text-white {% if 'cargos' in request.endpoint %}active-link{% endif %}">
+            class="nav-link text-white {% if 'cargos' in request.endpoint %}active-link{% endif %}">
                 <i class="fa-solid fa-briefcase me-2"></i> Cargos
             </a>
         </li>
+        {% endif %}
 
     </ul>
 

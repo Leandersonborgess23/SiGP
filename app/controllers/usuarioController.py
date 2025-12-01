@@ -11,6 +11,12 @@ class UsuarioController:
             usuario = Usuario()
             form.populate_obj(usuario)
             usuario.password_hash = generate_password_hash(form.password.data)
+
+            # Se for o primeiro usuário, torna admin automaticamente 
+            from app.models.usuario import Usuario as UModel
+            if UModel.query.count() == 0:
+                usuario.role = "admin"
+
             db.session.add(usuario)
             db.session.commit()
             return True
