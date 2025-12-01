@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+{% block titulo %}Editar Perfil{% endblock %}
+
+{% block conteudo %}
+
+<div class="card shadow-lg border-0 p-4 col-12 col-lg-6 mx-auto">
+
+    <h3 class="mb-4 text-center fw-bold">
+        <i class="fa-solid fa-user-pen text-primary"></i> Editar Perfil
+    </h3>
+
+    <form method="POST" enctype="multipart/form-data">
+        {{ form.hidden_tag() }}
+
+        <div class="mb-3">
+            {{ form.username.label(class="form-label fw-bold") }}
+            {{ form.username(class="form-control form-control-lg") }}
+        </div>
+
+        <div class="mb-3">
+            {{ form.email.label(class="form-label fw-bold") }}
+            {{ form.email(class="form-control form-control-lg") }}
+        </div>
+
+        <div class="mb-3">
+            {{ form.foto.label(class="form-label fw-bold") }}
+            {{ form.foto(class="form-control form-control-lg") }}
+        </div>
+
+        <button class="btn btn-success w-100 py-2 mt-2 fw-bold">
+            <i class="fa-solid fa-save"></i> {{ form.submit.label.text }}
+        </button>
+    </form>
+
+</div>
+
+{% endblock %}

@@ -12,6 +12,7 @@ class Usuario(db.Model, UserMixin):
     email: so.Mapped[str] = so.mapped_column(sa.String(120), index=True, unique=True)
     password_hash: so.Mapped[Optional[str]] = so.mapped_column(sa.String(256))
     role: so.Mapped[Optional[str]] = so.mapped_column(sa.String(30), default="operador")
+    foto: so.Mapped[Optional[str]] = so.mapped_column(sa.String(255), nullable=True)
 
     servidor_id: so.Mapped[Optional[int]] = so.mapped_column(
         sa.ForeignKey("servidores.id"), unique=True, index=True, nullable=True

@@ -8,6 +8,8 @@ from app.forms.secretaria_form import SecretariaForm
 from app.forms.usuarioedit_form import UsuarioEditForm
 from app.forms.secretariaedit_form import SecretariaEditForm
 from app.forms.cargoedit_form import CargoEditForm
+from app.forms.perfil_form import PerfilForm
+from app.forms.alterarsenha_form import AlterarSenhaForm
 from app.controllers.cargoController import CargoController
 from app.controllers.authenticationController import AuthenticationController
 from app.controllers.usuarioController import UsuarioController
@@ -17,6 +19,10 @@ from app.models import Secretaria, Cargo, Usuario, Servidor, Prefeitura, Ativida
 from app.utils.log import registrar_atividade
 from flask_login import current_user, login_required
 from app.auth.decorators import requires_roles
+from werkzeug.utils import secure_filename
+from werkzeug.security import generate_password_hash
+import os
+
 
 
 """
@@ -56,6 +62,60 @@ def logout():
         registrar_atividade(f"Logout realizado por '{current_user.username}'")
         flash("Logout realizado com sucesso!", "success")
     return redirect(url_for("login"))
+
+
+@app.route("/perfil")
+@login_required
+def perfil_usuario():
+    usuario = current_user
+    return render_template("perfil/perfil.html", usuario=usuario)
+
+
+@app.route("/perfil/editar", methods=["GET", "POST"])
+@login_required
+def perfil_editar():
+    usuario = current_user
+    form = PerfilForm(obj=usuario)
+
+    if form.validate_on_submit():
+
+        usuario.username = form.username.data
+        usuario.email = form.email.data
+
+        # Senha nova opcional
+        if form.password.data:
+            AuthenticationController.atualizar_senha(usuario, form.password.data)
+
+        # FOTO DE PERFIL
+        if form.foto.data:
+            filename = secure_filename(form.foto.data.filename)
+            path = os.path.join("app/static/uploads/perfis", filename)
+            form.foto.data.save(path)
+            usuario.foto = f"uploads/perfis/{filename}"
+
+        db.session.commit()
+        flash("Perfil atualizado com sucesso!", "success")
+        return redirect(url_for("perfil_usuario"))
+
+    return render_template("perfil/edit.html", form=form, usuario=usuario)
+
+
+@app.route("/perfil/senha", methods=["GET", "POST"])
+@login_required
+def perfil_alterar_senha():
+    form = AlterarSenhaForm()
+
+    if form.validate_on_submit():
+        nova_senha_hash = generate_password_hash(form.nova_senha.data)
+
+        current_user.password_hash = nova_senha_hash
+        db.session.commit()
+
+        flash("Senha atualizada com sucesso!", "success")
+        return redirect(url_for("perfil_usuario"))
+
+    return render_template("perfil/senha.html", form=form)
+
 
 
 @app.route('/usuarios/cadastrar', methods=['GET', 'POST'])

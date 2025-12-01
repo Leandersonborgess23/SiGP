@@ -1,7 +1,7 @@
 <nav class="navbar navbar-expand-lg navbar-light shadow-sm px-3 bg-white">
     <div class="container-fluid d-flex align-items-center">
 
-        <!-- Botão para abrir/fechar sidebar -->
+        <!-- Botão Sidebar -->
         <button class="btn btn-link text-primary fs-4 me-3" id="sidebarToggle">
             <i class="fa-solid fa-bars"></i>
         </button>
@@ -12,18 +12,57 @@
              class="img-fluid me-2"
              style="height: 40px; width: auto;">
 
-        <!-- Nome da prefeitura -->
+        <!-- Nome -->
         <span class="navbar-brand fw-bold text-primary">
             Prefeitura de Pureza - RN
         </span>
 
         <!-- Área do usuário -->
-        <div class="ms-auto d-flex">
+        <div class="ms-auto d-flex align-items-center">
+
             {% if current_user.is_authenticated %}
-                <span class="me-3">
-                    <i class="fa-solid fa-user"></i>
+
+            <!-- FOTO DO USUÁRIO -->
+            <img src="{{ url_for('static', filename=current_user.foto or 'img/user-default.png') }}"
+                 class="rounded-circle me-2"
+                 width="40" height="40">
+
+            <!-- DROPDOWN DO USUÁRIO -->
+            <div class="dropdown">
+                <button class="btn btn-white dropdown-toggle fw-semibold"
+                        type="button"
+                        id="userDropdown"
+                        data-bs-toggle="dropdown"
+                        aria-expanded="false">
+                    <i class="fa-solid fa-user me-1"></i>
                     {{ current_user.username }}
-                </span>
+                </button>
+
+                <ul class="dropdown-menu dropdown-menu-end shadow" aria-labelledby="userDropdown">
+
+                    <li>
+                        <a class="dropdown-item" href="{{ url_for('perfil_usuario') }}">
+                            <i class="fa-solid fa-id-badge me-2"></i> Meu Perfil
+                        </a>
+                    </li>
+
+                    <li>
+                        <a class="dropdown-item" href="#">
+                            <i class="fa-solid fa-gear me-2"></i> Configurações
+                        </a>
+                    </li>
+
+                    <li><hr class="dropdown-divider"></li>
+
+                    <li>
+                        <a class="dropdown-item text-danger" href="{{ url_for('logout') }}">
+                            <i class="fa-solid fa-right-from-bracket me-2"></i> Sair
+                        </a>
+                    </li>
+
+                </ul>
+            </div>
+
             {% endif %}
         </div>
 
