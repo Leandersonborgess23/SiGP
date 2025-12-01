@@ -170,6 +170,32 @@
 
 </div>
 
+<div class="card mb-4">
+    <div class="card-header">
+        <i class="fas fa-list"></i> Atividades Recentes
+    </div>
+    <div class="card-body">
+        <table class="table table-hover">
+            <thead class="table-primary">
+                <tr>
+                    <th>Data</th>
+                    <th>Usuário</th>
+                    <th>Ação</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for a in atividades %}
+                <tr>
+                    <td>{{ a.data.strftime('%d/%m/%Y %H:%M') }}</td>
+                    <td>{{ a.usuario }}</td>
+                    <td>{{ a.acao }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
 <!-- ROW 4: Atividades + Notícias -->
 <div class="row">
 

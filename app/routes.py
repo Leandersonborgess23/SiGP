@@ -13,7 +13,8 @@ from app.controllers.authenticationController import AuthenticationController
 from app.controllers.usuarioController import UsuarioController
 from app.controllers.servidorController import ServidorController
 from app.controllers.secretariaController import SecretariaController
-from app.models import Secretaria, Cargo, Usuario, Servidor, Prefeitura
+from app.models import Secretaria, Cargo, Usuario, Servidor, Prefeitura, Atividade
+from app.utils.log import registrar_atividade
 from flask_login import current_user, login_required
 
 
@@ -31,6 +32,7 @@ def login():
     formulario = LoginForm()
     if formulario.validate_on_submit():
         if AuthenticationController.login(formulario):
+            registrar_atividade(f"Login realizado por '{formulario.username.data}'")
             flash("Login realizado com sucesso!", "success")
             next_page = request.args.get('next')
             if not next_page:
@@ -38,6 +40,7 @@ def login():
             return redirect(next_page)
             """return redirect(url_for("home"))"""
         else:
+            registrar_atividade(f"TENTATIVA FALHA de login para '{formulario.username.data}'")
             flash("Usuário ou senha inválidos.", "error")
     return render_template('login.html', title='Login', form=formulario)
 
@@ -49,6 +52,7 @@ def logout():
     if not successo:
         flash("Erro ao realizar logout.", "error")
     else:
+        registrar_atividade(f"Logout realizado por '{current_user.username}'")
         flash("Logout realizado com sucesso!", "success")
     return redirect(url_for("login"))
 
@@ -60,6 +64,7 @@ def usuarios_cadastrar():
     if formulario.validate_on_submit():
         sucesso = UsuarioController.salvar(formulario)
         if sucesso:
+            registrar_atividade(f"Usuário '{formulario.username.data}' cadastrado.")
             flash("Usuário cadastrado com sucesso!", category='success')
             return redirect(url_for('login'))
             """return redirect(url_for('login'))"""
@@ -89,6 +94,7 @@ def usuarios_edit(id):
             usuario.password_hash = generate_password_hash(form.password.data)"""
         #db.session.commit()
         #flash('Usuário atualizado com sucesso!', 'success')
+        registrar_atividade(f"Usuário ID {id} atualizado.")
         return redirect(url_for('usuarios_listar')) 
     return render_template('usuarios/edit.html', form=form, usuario=usuario)
 
@@ -99,6 +105,7 @@ def usuarios_edit(id):
 def usuarios_delete(id):
     resultado = UsuarioController.remover_usuario(id)
     if resultado:
+        registrar_atividade(f"Usuário ID {id} removido.")
         flash('Usuário excluído com sucesso!', 'success')
     else:
         flash('Erro ao excluir usuário.', 'danger')
@@ -123,6 +130,7 @@ def servidores_cadastrar():
     if form.validate_on_submit():
         sucesso = ServidorController.criar(form)
         if sucesso:
+            registrar_atividade(f"Servidor '{form.nome.data}' cadastrado.")
             flash("Servidor cadastrado com sucesso!", "success")
             return redirect(url_for("servidores_listar"))
         else:
@@ -152,6 +160,7 @@ def servidores_editar(id):
     form.secretaria_id.choices = [(s.id, s.nome) for s in secretarias]
     if form.validate_on_submit():
         ServidorController.atualizar(id, form)
+        registrar_atividade(f"Servidor ID {id} atualizado.")
         flash("Servidor atualizado com sucesso!", "success")
         return redirect(url_for("servidores_listar"))
     return render_template("servidores/edit.html", form=form, servidor=servidor)
@@ -162,6 +171,7 @@ def servidores_editar(id):
 def servidores_delete(id):
     sucesso = ServidorController.remover(id)
     if sucesso:
+        registrar_atividade(f"Servidor ID {id} removido.")
         flash("Servidor removido com sucesso!", "success")
     else:
         flash("Erro ao remover servidor.", "error")
@@ -175,6 +185,7 @@ def secretarias_cadastrar():
     if form.validate_on_submit():
         sucesso = SecretariaController.criar(form)
         if sucesso:
+            registrar_atividade(f"Secretaria '{form.nome.data}' criada.")
             flash("Secretaria cadastrada!", "success")
             return redirect(url_for("secretarias_listar"))
         else:
@@ -196,6 +207,7 @@ def secretarias_editar(id):
     form = SecretariaEditForm(obj=secretaria)
     if form.validate_on_submit():
         if SecretariaController.atualizar(id, form):
+            registrar_atividade(f"Secretaria ID {id} atualizada.")
             flash("Secretaria atualizada!", "success")
             return redirect(url_for('secretarias_listar'))
         else:
@@ -207,6 +219,7 @@ def secretarias_editar(id):
 @login_required
 def secretarias_delete(id):
     if SecretariaController.remover(id):
+        registrar_atividade(f"Secretaria ID {id} removida.")
         flash("Secretaria removida!", "success")
     else:
         flash("Erro ao remover secretaria.", "error")
@@ -220,6 +233,7 @@ def cargos_cadastrar():
     if form.validate_on_submit():
         sucesso = CargoController.criar(form)
         if sucesso:
+            registrar_atividade(f"Cargo '{form.nome.data}' cadastrado.")
             flash("Cargo cadastrado com sucesso!", "success")
             return redirect(url_for("cargos_listar"))
         else:
@@ -242,6 +256,7 @@ def cargos_editar(id):
     if form.validate_on_submit():
         sucesso = CargoController.atualizar(id, form)
         if sucesso:
+            registrar_atividade(f"Cargo ID {id} atualizado.")
             flash("Cargo atualizado com sucesso!", "success")
             return redirect(url_for('cargos_listar'))
         else:
@@ -254,6 +269,7 @@ def cargos_editar(id):
 def cargos_delete(id):
     sucesso = CargoController.remover(id)
     if sucesso:
+        registrar_atividade(f"Cargo ID {id} removido.")
         flash("Cargo removido com sucesso!", "success")
     else:
         flash("Erro ao remover cargo.", "error")
@@ -269,6 +285,8 @@ def dashboard():
     total_cargos = Cargo.query.count()
     ultimos_usuarios = Usuario.query.order_by(Usuario.id.desc()).limit(5).all()
     ultimos_servidores = Servidor.query.order_by(Servidor.id.desc()).limit(5).all()
+    atividades = Atividade.query.order_by(Atividade.data.desc()).limit(10).all()
+
 
     # Dados para gráficos
     servidores_por_secretaria = (
@@ -294,5 +312,6 @@ def dashboard():
         servidores_por_secretaria=servidores_por_secretaria,
         cargos_distribuicao=cargos_distribuicao,
         ultimos_usuarios=ultimos_usuarios,
-        ultimos_servidores=ultimos_servidores
+        ultimos_servidores=ultimos_servidores,
+        atividades=atividades
     )
