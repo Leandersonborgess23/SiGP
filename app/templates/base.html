@@ -34,40 +34,40 @@
 
 <body>
 
-<div class="d-flex">
+    <div class="d-flex">
 
-    <!-- Sidebar -->
-    {% include 'includes/sidebar.html' %}
+        <!-- Sidebar -->
+        {% include 'includes/sidebar.html' %}
 
-    <!-- Conteúdo principal -->
-    <div class="flex-grow-1">
+        <!-- Conteúdo principal -->
+        <div class="flex-grow-1">
 
-        <!-- Navbar -->
-        {% include 'includes/navbar.html' %}
+            <!-- Navbar -->
+            {% include 'includes/navbar.html' %}
 
-        <main class="container-fluid py-4">
-            {% block conteudo %}{% endblock %}
-        </main>
+            <main class="container-fluid py-4">
+                {% block conteudo %}{% endblock %}
+            </main>
 
-        <!-- Footer -->
-        {% include 'includes/footer.html' %}
+            <!-- Footer -->
+            {% include 'includes/footer.html' %}
+
+        </div>
 
     </div>
 
-</div>
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
-<!-- Bootstrap JS -->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Charts.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
-<!-- Charts.js -->
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2"></script>
 
-<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2"></script>
+    <!-- Scripts do sistema -->
+    <script src="{{ url_for('static', filename='js/scripts.js') }}"></script>
 
-<!-- Scripts do sistema -->
-<script src="{{ url_for('static', filename='js/scripts.js') }}"></script>
-
-<script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/main.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/main.min.js"></script>
 
 </body>
 </html>
