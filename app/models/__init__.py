@@ -5,5 +5,5 @@ from .cargo import Cargo
 from .servidor import Servidor
 from .atividade import Atividade
 from .noticia import Noticia
-
+from .evento import Evento
 

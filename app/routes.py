@@ -11,7 +11,9 @@ from app.forms.cargoedit_form import CargoEditForm
 from app.forms.perfil_form import PerfilForm
 from app.forms.alterarsenha_form import AlterarSenhaForm
 from app.forms.noticia_form import NoticiaForm
+from app.forms.evento_form import EventoForm
 from app.controllers.cargoController import CargoController
+from app.controllers.eventoController import EventoController
 from app.controllers.authenticationController import AuthenticationController
 from app.controllers.usuarioController import UsuarioController
 from app.controllers.servidorController import ServidorController
@@ -394,6 +396,35 @@ def atividades_listar():
     return render_template("atividades/atividade.html", atividades=atividades)
 
 
+@app.route("/eventos")
+@login_required
+def eventos_listar():
+    eventos = EventoController.listar()
+    return render_template("eventos/evento.html", eventos=eventos)
+
+
+@app.route("/eventos/cadastrar", methods=["GET", "POST"])
+@login_required
+@requires_roles("admin", "gestor")
+def eventos_cadastrar():
+    form = EventoForm()
+    if form.validate_on_submit():
+        EventoController.criar(form)
+        flash("Evento cadastrado!", "success")
+        return redirect(url_for("eventos_listar"))
+    return render_template("eventos/cadastro.html", form=form)
+
+
+@app.route("/eventos/<int:id>/delete", methods=["POST"])
+@login_required
+@requires_roles("admin")
+def eventos_delete(id):
+    EventoController.remover(id)
+    flash("Evento removido!", "success")
+    return redirect(url_for("eventos_listar"))
+
+
+
 @app.route("/dashboard")
 @login_required
 def dashboard():
@@ -405,6 +436,8 @@ def dashboard():
     ultimos_servidores = Servidor.query.order_by(Servidor.id.desc()).limit(5).all()
     atividades = Atividade.query.order_by(Atividade.data.desc()).limit(10).all()
     noticias = NoticiaController.listar(limit=5)
+    eventos = EventoController.listar()
+
 
 
     # Dados para gráficos
@@ -433,5 +466,6 @@ def dashboard():
         ultimos_usuarios=ultimos_usuarios,
         ultimos_servidores=ultimos_servidores,
         atividades=atividades,
-        noticias=noticias
+        noticias=noticias,
+        eventos=eventos
     )

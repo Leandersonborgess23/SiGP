@@ -79,6 +79,12 @@ document.addEventListener("DOMContentLoaded", function () {
         const calendar = new FullCalendar.Calendar(calendarEl, {
             initialView: 'dayGridMonth',
             locale: 'pt-br',
+            height: 520,
+            headerToolbar: {
+                left: 'prev,next today',
+                center: 'title',
+                right: ''
+            },
             events: [
                 { title: 'Reunião na Prefeitura', start: '2025-02-10' },
                 { title: 'Pagamento Servidores', start: '2025-02-25' },

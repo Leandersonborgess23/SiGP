@@ -76,6 +76,13 @@
         </li>
         {% endif %}
 
+        <!-- Calendário (todos os usuários) -->
+        <li>
+            <a href="{{ url_for('eventos_listar') }}"
+               class="nav-link text-white {% if request.endpoint == 'calendario' %}active-link{% endif %}">
+                <i class="fa-solid fa-calendar-days me-2"></i> Calendário
+            </a>
+        </li>
 
     </ul>
 
