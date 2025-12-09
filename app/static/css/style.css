@@ -1,64 +1,71 @@
 /* Tema azul da Prefeitura de Pureza */
 :root {
-    --sigp-blue: #0d6efd;   /* azul bootstrap */
+    --sigp-blue: #0d6efd;
     --sigp-blue-dark: #0a58ca;
 }
 
-/* Sidebar */
-#sidebar {
-    background-color: var(--sigp-blue);
+/* Wrapper geral ocupando 100% da tela */
+#wrapper {
+    min-height: 100vh !important;
 }
 
-#sidebar .nav-link:hover {
-    background: var(--sigp-blue-dark);
-}
-
-/* Layout com sidebar recolhível */
-#sidebar.collapsed {
-    width: 70px;
-    transition: 0.3s;
-}
-
-#sidebar.collapsed .nav-link span {
-    display: none;
-}
-
-.card {
-    border-radius: 12px;
-}
-
-/* Remove fundo branco e deixa destaque suave */
-.active-link {
-    background-color: rgba(255, 255, 255, 0.25) !important;
-    border-radius: 6px;
-    font-weight: 600;
-}
-
-#sidebar img {
-    max-width: 90px !important;
-    height: auto;
-}
-
-/* Sidebar */
+/* Sidebar fixo e vertical completo */
 #sidebar {
     width: 240px;
+    background-color: var(--sigp-blue);
+    height: 100vh;                  /* Garantia que ocupa toda a tela */
+    position: sticky;                /* Impede de rolar junto com conteúdo */
+    top: 0;
+    display: flex;
+    flex-direction: column;
+    padding: 1rem;
     transition: all .3s ease;
 }
 
+/* Sidebar recolhido */
 #sidebar.collapsed {
-    width: 0;
-    padding: 0;
+    width: 0 !important;
+    padding: 0 !important;
     opacity: 0;
     overflow: hidden;
+    transition: all .3s ease;
 }
 
-/* Link ativo */
-.active-link {
-    background-color: rgba(255, 255, 255, 0.2) !important;
+/* Quando recolher, garantir que o conteúdo ocupe a tela toda */
+#content.expanded {
+    margin-left: 0 !important;
+}
+
+/* Imagem do topo */
+#sidebar img {
+    max-width: 90px;
+    margin-bottom: 1.5rem;
+}
+
+/* Links do menu */
+#sidebar .nav-link {
+    color: white;
+    margin-bottom: 6px;
+    padding: 10px 12px;
     border-radius: 6px;
 }
 
-/* calender */
+#sidebar .nav-link:hover {
+    background-color: var(--sigp-blue-dark);
+}
+
+/* Estilo do link ativo */
+.active-link {
+    background-color: rgba(255,255,255,0.25) !important;
+    font-weight: 600;
+}
+
+/* Calendário */
 #calendar {
     min-height: 520px !important;
+}
+
+/* Cards */
+.card {
+    border-radius: 12px;
 }
