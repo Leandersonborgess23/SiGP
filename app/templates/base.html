@@ -13,23 +13,9 @@
 
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/main.min.css">
 
-    <!-- Tema azul prefeitura -->
-    <style>
-        :root{
-            --azul-prefeitura: #0055A4;
-            --azul-claro: #e8f1fb;
-        }
-        body { background-color: var(--azul-claro); }
-        #sidebar { width: 240px; }
-        #sidebar .nav-link { color: white; font-size: 15px; }
-        #sidebar .nav-link:hover { background-color: rgba(255,255,255,0.2); }
-        #sidebar .active { background-color: rgba(255,255,255,0.3); }
-        .navbar { background-color: white !important; }
-        .footer-bg { background-color: #f8f9fc; }
-    </style>
-
     <!-- Estilos personalizados -->
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    
 </head>
 
 <body>
@@ -40,7 +26,7 @@
         {% include 'includes/sidebar.html' %}
 
         <!-- Conteúdo principal -->
-        <div class="flex-grow-1">
+        <div id="content" class="flex-grow-1 d-flex flex-column">
 
             <!-- Navbar -->
             {% include 'includes/navbar.html' %}

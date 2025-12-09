@@ -84,6 +84,22 @@
             </a>
         </li>
 
+        <!-- Calendário (todos os usuários) -->
+        <li>
+            <a href="{{ url_for('protocolos_listar') }}"
+               class="nav-link text-white {% if request.endpoint == 'calendario' %}active-link{% endif %}">
+                <i class="fa-solid fa-calendar-days me-2"></i> Protocolos
+            </a>
+        </li>
+
+        <!-- Calendário (todos os usuários) -->
+        <li>
+            <a href="{{ url_for('tramitacoes_listar') }}"
+               class="nav-link text-white {% if request.endpoint == 'calendario' %}active-link{% endif %}">
+                <i class="fa-solid fa-calendar-days me-2"></i> Tramitações
+            </a>
+        </li>
+
     </ul>
 
     <hr class="text-white">

@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+{% block titulo %}Protocolos{% endblock %}
+
+{% block conteudo %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h3>Protocolos</h3>
+    <a href="{{ url_for('protocolos_cadastrar') }}" class="btn btn-primary">Novo Protocolo</a>
+</div>
+
+<table class="table table-hover">
+    <thead class="table-primary">
+        <tr>
+            <th>Nº</th>
+            <th>Título</th>
+            <th>Destino</th>
+            <th>Status</th>
+            <th>Data</th>
+            <th class="text-end">Ações</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for p in protocolos %}
+        <tr>
+            <td>{{ p.numero or "-" }}</td>
+            <td>{{ p.titulo }}</td>
+            <td>{{ p.secretaria_destino.nome if p.secretaria_destino else "-" }}</td>
+            <td>{{ p.status }}</td>
+            <td>{{ p.data_criacao.strftime("%d/%m/%Y %H:%M") }}</td>
+            <td class="text-end">
+                <a href="{{ url_for('protocolos_visualizar', id=p.id) }}" class="btn btn-sm btn-info">Ver</a>
+
+                <form method="POST" action="{{ url_for('protocolos_delete', id=p.id) }}" style="display:inline-block;" onsubmit="return confirm('Excluir protocolo?');">
+                    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                    <button class="btn btn-sm btn-danger">Excluir</button>
+                </form>
+            </td>
+        </tr>
+        {% else %}
+        <tr>
+            <td colspan="6" class="text-center text-muted">Nenhum protocolo encontrado.</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

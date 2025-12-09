@@ -6,4 +6,8 @@ from .servidor import Servidor
 from .atividade import Atividade
 from .noticia import Noticia
 from .evento import Evento
+from .protocolo import Protocolo
+from .tramitacao import Tramitacao
+from .logacao import LogAcao
+
 

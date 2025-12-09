@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+{% block titulo %}Protocolo - {{ protocolo.numero or '' }}{% endblock %}
+
+{% block conteudo %}
+<div class="card p-4">
+    <div class="d-flex justify-content-between align-items-start">
+        <div>
+            <h4>{{ protocolo.numero or '-' }} — {{ protocolo.titulo }}</h4>
+            <p class="mb-1"><strong>Status:</strong> {{ protocolo.status }}</p>
+            <p class="mb-1"><strong>Origem:</strong> {{ protocolo.secretaria_origem.nome if protocolo.secretaria_origem else '-' }}</p>
+            <p class="mb-1"><strong>Destino atual:</strong> {{ protocolo.secretaria_destino.nome if protocolo.secretaria_destino else '-' }}</p>
+            <p class="mb-1"><strong>Criado por:</strong> {{ protocolo.criado_por }}</p>
+            <p class="mt-3">{{ protocolo.descricao or '-' }}</p>
+            {% if protocolo.arquivo %}
+            <p><a href="{{ url_for('static', filename=protocolo.arquivo) }}" target="_blank" class="btn btn-outline-primary btn-sm">Abrir Anexo</a></p>
+            {% endif %}
+        </div>
+
+        <div style="min-width: 300px;">
+            <h5>Tramitar</h5>
+            <form method="POST" action="{{ url_for('protocolos_tramitar', id=protocolo.id) }}">
+                {{ form.hidden_tag() }}
+                <div class="mb-2">
+                    {{ form.para_secretaria_id.label(class="form-label") }}
+                    {{ form.para_secretaria_id(class="form-select") }}
+                </div>
+                <div class="mb-2">
+                    {{ form.observacao.label(class="form-label") }}
+                    {{ form.observacao(class="form-control", rows="3") }}
+                </div>
+                <button class="btn btn-primary">{{ form.submit.label.text }}</button>
+            </form>
+        </div>
+    </div>
+
+    <hr>
+
+    <h5>Histórico de Tramitação</h5>
+    <ul class="list-group">
+        {% for t in protocolo.historico %}
+        <li class="list-group-item">
+            <small class="text-muted">{{ t.data.strftime("%d/%m/%Y %H:%M") }}</small><br>
+
+            <strong>De:</strong> {{ t.de_secretaria.nome if t.de_secretaria else "-" }}
+            <strong>Para:</strong> {{ t.para_secretaria.nome if t.para_secretaria else "-" }}<br>
+
+            <em>{{ t.observacao or "-" }}</em><br>
+
+            {% if t.arquivo %}
+                <a href="{{ url_for('static', filename=t.arquivo) }}" 
+                target="_blank" 
+                class="btn btn-sm btn-outline-info mt-2">
+                    <i class="fa-solid fa-file-pdf"></i> Ver Anexo da Tramitação
+                </a>
+            {% endif %}
+        </li>
+        {% else %}
+        <li class="list-group-item text-muted">Ainda não houve tramitações.</li>
+        {% endfor %}
+    </ul>
+</div>
+{% endblock %}

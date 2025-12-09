@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{% block titulo %}Cadastrar Protocolo{% endblock %}
+
+{% block conteudo %}
+<div class="card p-4 col-md-8 mx-auto">
+    <h3>Novo Protocolo</h3>
+
+    <form method="POST" enctype="multipart/form-data">
+        {{ form.hidden_tag() }}
+
+        <div class="mb-3">
+            {{ form.titulo.label(class="form-label") }}
+            {{ form.titulo(class="form-control") }}
+        </div>
+
+        <div class="mb-3">
+            {{ form.descricao.label(class="form-label") }}
+            {{ form.descricao(class="form-control", rows="5") }}
+        </div>
+
+        <div class="mb-3">
+            {{ form.secretaria_destino_id.label(class="form-label") }}
+            {{ form.secretaria_destino_id(class="form-select") }}
+        </div>
+
+        <div class="mb-3">
+            {{ form.arquivo.label(class="form-label") }}
+            {{ form.arquivo(class="form-control") }}
+            <small class="text-muted">Apenas PDF. (opcional)</small>
+        </div>
+
+        <button class="btn btn-success w-100">{{ form.submit.label.text }}</button>
+    </form>
+</div>
+{% endblock %}

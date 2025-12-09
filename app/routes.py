@@ -12,6 +12,8 @@ from app.forms.perfil_form import PerfilForm
 from app.forms.alterarsenha_form import AlterarSenhaForm
 from app.forms.noticia_form import NoticiaForm
 from app.forms.evento_form import EventoForm
+from app.forms.protocolo_form import ProtocoloForm
+from app.forms.tramitacao_form import TramitacaoForm
 from app.controllers.cargoController import CargoController
 from app.controllers.eventoController import EventoController
 from app.controllers.authenticationController import AuthenticationController
@@ -19,12 +21,16 @@ from app.controllers.usuarioController import UsuarioController
 from app.controllers.servidorController import ServidorController
 from app.controllers.secretariaController import SecretariaController
 from app.controllers.noticiaController import NoticiaController
+from app.controllers.protocoloController import ProtocoloController
 from app.models import Secretaria, Cargo, Usuario, Servidor, Prefeitura, Atividade
+from app.models.tramitacao import Tramitacao
+from app.models.protocolo import Protocolo
 from app.utils.log import registrar_atividade
 from flask_login import current_user, login_required
 from app.auth.decorators import requires_roles
 from werkzeug.utils import secure_filename
 from werkzeug.security import generate_password_hash
+from flask import jsonify
 import os
 
 
@@ -59,11 +65,12 @@ def login():
 @app.route('/logout')
 @login_required
 def logout():
+    usuario = current_user.username
     successo = AuthenticationController.logout()
     if not successo:
         flash("Erro ao realizar logout.", "error")
     else:
-        registrar_atividade(f"Logout realizado por '{current_user.username}'")
+        registrar_atividade(f"Logout realizado por '{usuario}'")
         flash("Logout realizado com sucesso!", "success")
     return redirect(url_for("login"))
 
@@ -423,6 +430,96 @@ def eventos_delete(id):
     flash("Evento removido!", "success")
     return redirect(url_for("eventos_listar"))
 
+
+@app.route("/api/eventos")
+def api_eventos():
+    eventos = EventoController.listar()
+
+    lista = []
+    for e in eventos:
+        lista.append({
+            "id": e.id,
+            "title": e.titulo,
+            "start": e.data_inicio.isoformat(),
+            "end": e.data_fim.isoformat() if e.data_fim else None,
+            "description": e.descricao
+        })
+
+    return jsonify(lista)
+
+
+@app.route('/protocolos')
+def protocolos_listar():
+    protocolos = ProtocoloController.listar()
+    return render_template('protocolos/protocolos.html', protocolos=protocolos)
+
+@app.route('/protocolos/novo', methods=['GET', 'POST'])
+def protocolos_cadastrar():
+    form = ProtocoloForm()
+    # preencher choices de secretarias
+    secretarias = Secretaria.query.order_by(Secretaria.nome).all()
+    form.secretaria_destino_id.choices = [(0, '--- Selecionar ---')] + [(s.id, s.nome) for s in secretarias]
+
+    if form.validate_on_submit():
+        # Se usuário escolheu 0 -> None
+        if form.secretaria_destino_id.data == 0:
+            form.secretaria_destino_id.data = None
+        ok = ProtocoloController.criar(form)
+        if ok:
+            flash("Protocolo salvo com sucesso.", "success")
+            return redirect(url_for('protocolos_listar'))
+        else:
+            flash("Erro ao salvar protocolo.", "danger")
+
+    return render_template('protocolos/cadastro.html', form=form)
+
+@app.route('/protocolos/<int:id>')
+def protocolos_visualizar(id):
+    protocolo = ProtocoloController.buscar(id)
+    if not protocolo:
+        flash("Protocolo não encontrado.", "warning")
+        return redirect(url_for('protocolos_listar'))
+
+    form = TramitacaoForm()
+    secretarias = Secretaria.query.order_by(Secretaria.nome).all()
+    form.para_secretaria_id.choices = [(s.id, s.nome) for s in secretarias]
+
+    return render_template('protocolos/visualizar.html', protocolo=protocolo, form=form)
+
+@app.route('/protocolos/<int:id>/tramitar', methods=['POST'])
+def protocolos_tramitar(id):
+    form = TramitacaoForm()
+    secretarias = Secretaria.query.order_by(Secretaria.nome).all()
+    form.para_secretaria_id.choices = [(s.id, s.nome) for s in secretarias]
+
+    if form.validate_on_submit():
+        ok = ProtocoloController.tramitar(id, form)
+        if ok:
+            flash("Protocolo tramitado com sucesso.", "success")
+        else:
+            flash("Erro ao tramitar protocolo.", "danger")
+    else:
+        flash("Formulário inválido.", "warning")
+    return redirect(url_for('protocolos_visualizar', id=id))
+
+
+@app.route('/protocolos/<int:id>/delete', methods=['POST'])
+@requires_roles('admin', 'gestor')  # apenas admin/gestor podem excluir (ajuste conforme sua política)
+def protocolos_delete(id):
+    # CSRF token será validado via Flask-WTF (form hidden tag)
+    ok = ProtocoloController.remover(id)
+    if ok:
+        flash("Protocolo removido com sucesso.", "success")
+    else:
+        flash("Erro ao remover protocolo.", "danger")
+    return redirect(url_for('protocolos_listar'))
+
+
+@app.route('/tramitacoes')
+@login_required
+def tramitacoes_listar():
+    tramitacoes = Tramitacao.query.order_by(Tramitacao.data.desc()).all()
+    return render_template('protocolos/tramitacoes.html', tramitacoes=tramitacoes)
 
 
 @app.route("/dashboard")

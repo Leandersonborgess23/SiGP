@@ -85,19 +85,8 @@ document.addEventListener("DOMContentLoaded", function () {
                 center: 'title',
                 right: ''
             },
-            events: [
-                { title: 'Reunião na Prefeitura', start: '2025-02-10' },
-                { title: 'Pagamento Servidores', start: '2025-02-25' },
-                {
-                    title: 'Aniversário de Pureza',
-                    start: '2025-03-05',
-                    backgroundColor: '#28a745',
-                    borderColor: '#28a745'
-                }
-            ]
+            events: "/api/eventos" 
         });
-
-        calendar.render();
     }
 
 });

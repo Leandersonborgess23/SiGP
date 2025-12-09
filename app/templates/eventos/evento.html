@@ -24,6 +24,7 @@
             <td>{{ e.data_fim.strftime("%d/%m/%Y %H:%M") if e.data_fim else "-" }}</td>
             <td>
                 <form method="POST" action="{{ url_for('eventos_delete', id=e.id) }}" onsubmit="return confirm('Excluir?');">
+                    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
                     <button class="btn btn-danger btn-sm">Excluir</button>
                 </form>
             </td>

@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+{% block titulo %}Tramitações{% endblock %}
+
+{% block conteudo %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h3>Tramitações</h3>
+</div>
+
+<table class="table table-hover">
+    <thead class="table-primary">
+        <tr>
+            <th>Protocolo</th>
+            <th>De</th>
+            <th>Para</th>
+            <th>Usuário</th>
+            <th>Data</th>
+            <th>Observação</th>
+        </tr>
+    </thead>
+
+    <tbody>
+        {% for t in tramitacoes %}
+        <tr>
+            <td>#{{ t.protocolo.id }}</td>
+            <td>{{ t.de_secretaria.nome if t.de_secretaria else "-" }}</td>
+            <td>{{ t.para_secretaria.nome if t.para_secretaria else "-" }}</td>
+            <td>{{ t.usuario.nome }}</td>
+            <td>{{ t.data.strftime("%d/%m/%Y %H:%M") }}</td>
+            <td>{{ t.observacao or "-" }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}
