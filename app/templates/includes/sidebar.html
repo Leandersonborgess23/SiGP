@@ -100,6 +100,13 @@
             </a>
         </li>
 
+        <li>
+            <a href="{{ url_for('logs') }}"
+               class="nav-link text-white {% if request.endpoint == 'calendario' %}active-link{% endif %}">
+                <i class="fa-solid fa-calendar-days me-2"></i> Logs
+            </a>
+        </li>
+
     </ul>
 
     <hr class="text-white">

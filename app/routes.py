@@ -25,6 +25,7 @@ from app.controllers.protocoloController import ProtocoloController
 from app.models import Secretaria, Cargo, Usuario, Servidor, Prefeitura, Atividade
 from app.models.tramitacao import Tramitacao
 from app.models.protocolo import Protocolo
+from app.models.logacao import LogAcao
 from app.utils.log import registrar_atividade
 from flask_login import current_user, login_required
 from app.auth.decorators import requires_roles
@@ -522,6 +523,13 @@ def tramitacoes_listar():
     return render_template('protocolos/tramitacoes.html', tramitacoes=tramitacoes)
 
 
+@app.route("/logs")
+@login_required
+def logs():
+    logs = LogAcao.query.order_by(LogAcao.data.desc()).limit(200).all()
+    return render_template("logs/logs.html", logs=logs)
+
+
 @app.route("/dashboard")
 @login_required
 def dashboard():
@@ -534,6 +542,7 @@ def dashboard():
     atividades = Atividade.query.order_by(Atividade.data.desc()).limit(10).all()
     noticias = NoticiaController.listar(limit=5)
     eventos = EventoController.listar()
+    ultimos_logs = LogAcao.query.order_by(LogAcao.data.desc()).limit(10).all()
 
 
 
@@ -564,5 +573,6 @@ def dashboard():
         ultimos_servidores=ultimos_servidores,
         atividades=atividades,
         noticias=noticias,
-        eventos=eventos
+        eventos=eventos,
+        ultimos_logs=ultimos_logs
     )

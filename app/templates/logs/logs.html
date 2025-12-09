@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+{% block titulo %}Logs de Ações{% endblock %}
+
+{% block conteudo %}
+<div class="container-fluid">
+
+    <h1 class="h3 mb-4 text-gray-800">Logs do Sistema</h1>
+
+    <div class="card shadow mb-4">
+        <div class="card-header py-3">
+            <h6 class="m-0 font-weight-bold text-primary">Últimas Ações Registradas</h6>
+        </div>
+        <div class="card-body">
+
+            <div class="table-responsive">
+                <table class="table table-bordered table-striped">
+                    <thead class="thead-light">
+                        <tr>
+                            <th>Data</th>
+                            <th>Usuário</th>
+                            <th>Ação</th>
+                            <th>Entidade</th>
+                            <th>ID</th>
+                            <th>Detalhe</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for log in logs %}
+                        <tr>
+                            <td>{{ log.data.strftime("%d/%m/%Y %H:%M") }}</td>
+                            <td>{{ log.usuario.nome if log.usuario else "Sistema" }}</td>
+                            <td>{{ log.acao }}</td>
+                            <td>{{ log.entidade }}</td>
+                            <td>{{ log.entidade_id }}</td>
+                            <td>{{ log.detalhe or "-" }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+
+        </div>
+    </div>
+
+</div>
+{% endblock %}
