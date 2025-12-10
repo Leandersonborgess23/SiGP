@@ -2,20 +2,33 @@
     <div class="container-fluid d-flex align-items-center">
 
         <!-- Botão Sidebar -->
-        <button class="btn btn-link text-primary fs-4 me-3" id="sidebarToggle">
+        <button class="btn btn-link text-primary fs-4 me-3" id="sidebarToggle" aria-label="Toggle sidebar">
             <i class="fa-solid fa-bars"></i>
         </button>
 
         <!-- Brasão -->
         <img src="{{ url_for('static', filename='img/prefeitura-logo.png') }}"
-             alt="Logo"
+             alt="Logo Prefeitura"
              class="img-fluid me-2"
-             style="height: 40px; width: auto;">
+             style="height: 44px; width: auto;">
 
-        <!-- Nome -->
-        <span class="navbar-brand fw-bold text-primary">
-            Prefeitura de Pureza - RN
-        </span>
+        <!-- Marca (SiGP + descrição) -->
+        <a class="navbar-brand d-flex flex-column p-0 ms-1" 
+        href="{{ url_for('dashboard') }}" 
+        style="text-decoration: none;">
+            
+            <span id="sigp-brand" class="fw-bold text-primary"
+                style="font-size: 1.85rem; letter-spacing: 0.5px;">
+                SiGP
+            </span>
+
+            <small id="sigp-subtitle" class="text-muted"
+                style="font-size: 0.95rem; font-weight: 600; margin-top: -2px;">
+                SISTEMA DE GESTÃO DA PREFEITURA DE PUREZA
+            </small>
+
+        </a>
+
 
         <!-- Área do usuário -->
         <div class="ms-auto d-flex align-items-center">
@@ -25,7 +38,7 @@
             <!-- FOTO DO USUÁRIO -->
             <img src="{{ url_for('static', filename=current_user.foto or 'img/user-default.png') }}"
                  class="rounded-circle me-2"
-                 width="40" height="40">
+                 width="40" height="40" alt="Foto do usuário">
 
             <!-- DROPDOWN DO USUÁRIO -->
             <div class="dropdown">

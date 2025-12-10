@@ -117,4 +117,5 @@ document.addEventListener("DOMContentLoaded", function () {
     togglePassword("toggleNovaSenha", "novaSenha");
     togglePassword("toggleConfirmarSenha", "confirmarSenha");
 
+
 });

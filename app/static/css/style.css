@@ -1,139 +1,205 @@
-/* Tema azul da Prefeitura de Pureza */
+/* ============================================================
+    TEMA AZUL PRINCIPAL
+============================================================ */
 :root {
     --sigp-blue: #0d6efd;
     --sigp-blue-dark: #0a58ca;
+
+    --card-radius: 14px;
+    --smooth-shadow: 0 4px 14px rgba(0,0,0,0.08);
+
+    /* Cores adicionais para bordas superiores */
+    --border-primary: #0d6efd;
+    --border-success: #28a745;
+    --border-warning: #ffc107;
+    --border-info: #17a2b8;
+    --border-danger: #dc3545;
 }
 
-/* Wrapper geral ocupando 100% da tela */
-#wrapper {
-    min-height: 100vh !important;
-}
+/* ============================================================
+    SIDEBAR
+============================================================ */
+#wrapper { min-height: 100vh !important; }
 
-/* Sidebar fixo e vertical completo */
 #sidebar {
     width: 240px;
     background-color: var(--sigp-blue);
-    height: 100vh;                  /* Garantia que ocupa toda a tela */
-    position: sticky;                /* Impede de rolar junto com conteúdo */
+    color: white;
+    height: 100vh;
+    position: sticky;
     top: 0;
-    display: flex;
-    flex-direction: column;
     padding: 1rem;
     transition: all .3s ease;
+    box-shadow: var(--smooth-shadow);
 }
 
-/* Sidebar recolhido */
 #sidebar.collapsed {
     width: 0 !important;
     padding: 0 !important;
     opacity: 0;
     overflow: hidden;
-    transition: all .3s ease;
 }
 
-/* Quando recolher, garantir que o conteúdo ocupe a tela toda */
 #content.expanded {
     margin-left: 0 !important;
 }
 
-/* Imagem do topo */
 #sidebar img {
     max-width: 90px;
     margin-bottom: 1.5rem;
 }
 
-/* Links do menu */
 #sidebar .nav-link {
     color: white;
+    padding: 11px 14px;
     margin-bottom: 6px;
-    padding: 10px 12px;
     border-radius: 6px;
+    font-size: 1.05rem;
+    font-weight: 500;
 }
 
 #sidebar .nav-link:hover {
     background-color: var(--sigp-blue-dark);
 }
 
-/* Estilo do link ativo */
 .active-link {
-    background-color: rgba(255,255,255,0.25) !important;
-    font-weight: 600;
+    background-color: rgba(255,255,255,0.22) !important;
+    font-weight: 700;
 }
 
-/* Calendário */
-#calendar {
-    min-height: 520px !important;
-}
-
-/* Cards */
+/* ============================================================
+    CARDS – NOVO DESIGN
+============================================================ */
 .card {
-    border-radius: 12px;
+    border-radius: var(--card-radius);
+    box-shadow: var(--smooth-shadow);
+    border: none !important;
+    transition: transform .15s ease, box-shadow .15s ease;
 }
 
-.table-actions {
-    white-space: nowrap;
-    min-width: 120px;
+/* Efeito hover nos cards principais do dashboard */
+.card-dashboard:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 18px rgba(0,0,0,0.12);
 }
 
-/* ----------------------------- */
-/* TAMANHO PADRÃO DOS CARDS      */
-/* ----------------------------- */
+/* Borda superior colorida – estilo GOV */
+.card.border-left-primary { border-top: 4px solid var(--border-primary) !important; }
+.card.border-left-success { border-top: 4px solid var(--border-success) !important; }
+.card.border-left-warning { border-top: 4px solid var(--border-warning) !important; }
+.card.border-left-info    { border-top: 4px solid var(--border-info) !important; }
+.card.border-left-danger  { border-top: 4px solid var(--border-danger) !important; }
 
-/* Cards principais (primeira linha) */
-.card-fixed {
-    min-height: 150px !important; /* antes ~95px */
-}
+/* Cards principais da primeira linha */
+.card-fixed { min-height: 160px !important; }
 
-/* Cards padrão */
-.card-dashboard {
-    padding: 10px;
-    border-radius: 12px;
-}
+/* Cards de gráficos */
+.card-graph { min-height: 430px !important; }
 
-/* Gráficos maiores */
 .dashboard-chart {
-    height: 350px !important; /* Aumentado */
-    max-height: 380px !important;
+    height: 360px !important;
+    max-height: 390px !important;
 }
 
-/* Cards dos gráficos */
-.card-graph {
-    min-height: 420px !important; /* Aumentado */
+/* Indicadores */
+.indicador-card { min-height: 165px !important; }
+
+/* ============================================================
+    TABELAS MODERNIZADAS
+============================================================ */
+.table {
+    border-collapse: separate !important;
+    border-spacing: 0 6px;
 }
 
-/* Listas e tabelas maiores */
+.table thead tr {
+    background-color: rgba(13, 110, 253, 0.09) !important;
+}
+
+.table tbody tr {
+    background: white;
+    border-radius: 8px !important;
+    box-shadow: var(--smooth-shadow);
+}
+
+.table tbody tr:hover {
+    background: #eef5ff !important;
+    cursor: pointer;
+}
+
 .table td, .table th {
     font-size: 1.05rem !important;
-    padding: 12px !important;
+    padding: 14px !important;
+    vertical-align: middle;
+    border: none !important;
 }
 
-/* Títulos maiores */
-.card-header h6 {
-    font-size: 1.1rem !important;
-    font-weight: 600;
-}
-
-/* Cards da linha de indicadores */
-.indicador-card {
-    min-height: 160px !important;
-}
-
-/* Tipografia geral maior */
-h1, h2, h3, h4 {
-    font-size: 1.35rem !important;
-}
-
-h1.h3 {
-    font-size: 1.7rem !important;
-}
-
-/* Espaçamento maior antes dos indicadores */
-.dashboard-section-spacer {
-    margin-top: 40px !important;
-}
-
-/* Calendário maior */
+/* ============================================================
+    CALENDÁRIO
+============================================================ */
 #calendar {
     min-height: 680px !important;
 }
 
+/* ============================================================
+    TIPOGRAFIA E TÍTULOS
+============================================================ */
+h1, h2, h3, h4 {
+    font-weight: 700;
+}
+
+.card-header h6 {
+    font-size: 1.15rem !important;
+    font-weight: 700;
+}
+
+/* ============================================================
+    MARCA SIGP NO NAVBAR
+============================================================ */
+#sigp-brand {
+    font-size: 1.95rem !important;
+    font-weight: 800;
+    color: #004aad !important;
+}
+
+#sigp-subtitle {
+    font-size: 1rem !important;
+    opacity: 0.95;
+    margin-top: -2px;
+}
+
+/* Responsivo */
+@media (max-width: 575px) {
+    #sigp-subtitle { display: none; }
+    #sigp-brand { font-size: 1.65rem !important; }
+}
+
+.navbar .img-fluid {
+    max-height: 48px;
+}
+
+/* ============================================================
+    DARK MODE (opcional)
+============================================================ */
+body.dark-mode {
+    background: #1f1f1f !important;
+    color: #eaeaea !important;
+}
+
+body.dark-mode .card {
+    background: #2b2b2b !important;
+    color: #fff !important;
+}
+
+body.dark-mode .table tbody tr {
+    background: #323232 !important;
+    color: #fff !important;
+}
+
+body.dark-mode #sidebar {
+    background-color: #111 !important;
+}
+
+body.dark-mode #sidebar .nav-link:hover {
+    background-color: #222 !important;
+}
