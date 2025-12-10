@@ -449,20 +449,21 @@ def api_eventos():
 
 
 @app.route('/protocolos')
+@login_required
 def protocolos_listar():
     protocolos = ProtocoloController.listar()
     return render_template('protocolos/protocolos.html', protocolos=protocolos)
 
 
 @app.route('/protocolos/novo', methods=['GET', 'POST'])
+@login_required
+@requires_roles('admin', 'gestor') 
 def protocolos_cadastrar():
     form = ProtocoloForm()
-    # preencher choices de secretarias
     secretarias = Secretaria.query.order_by(Secretaria.nome).all()
     form.secretaria_destino_id.choices = [(0, '--- Selecionar ---')] + [(s.id, s.nome) for s in secretarias]
 
     if form.validate_on_submit():
-        # Se usuário escolheu 0 -> None
         if form.secretaria_destino_id.data == 0:
             form.secretaria_destino_id.data = None
         ok = ProtocoloController.criar(form)
@@ -476,20 +477,21 @@ def protocolos_cadastrar():
 
 
 @app.route('/protocolos/<int:id>')
+@login_required
 def protocolos_visualizar(id):
     protocolo = ProtocoloController.buscar(id)
     if not protocolo:
         flash("Protocolo não encontrado.", "warning")
         return redirect(url_for('protocolos_listar'))
-
     form = TramitacaoForm()
     secretarias = Secretaria.query.order_by(Secretaria.nome).all()
     form.para_secretaria_id.choices = [(s.id, s.nome) for s in secretarias]
-
     return render_template('protocolos/visualizar.html', protocolo=protocolo, form=form)
 
 
 @app.route('/protocolos/<int:id>/tramitar', methods=['POST'])
+@login_required
+@requires_roles("admin", "gestor")
 def protocolos_tramitar(id):
     form = TramitacaoForm()
     secretarias = Secretaria.query.order_by(Secretaria.nome).all()
@@ -507,9 +509,9 @@ def protocolos_tramitar(id):
 
 
 @app.route('/protocolos/<int:id>/delete', methods=['POST'])
-@requires_roles('admin', 'gestor')  # apenas admin/gestor podem excluir (ajuste conforme sua política)
+@login_required
+@requires_roles('admin', 'gestor')  
 def protocolos_delete(id):
-    # CSRF token será validado via Flask-WTF (form hidden tag)
     ok = ProtocoloController.remover(id)
     if ok:
         flash("Protocolo removido com sucesso.", "success")
@@ -548,6 +550,7 @@ def documentos():
 
 @app.route("/documentos/novo", methods=["GET", "POST"])
 @login_required
+@requires_roles('admin', 'gestor') 
 def documentos_novo():
     form = DocumentoForm()
     form.carregar_secretarias()
@@ -556,12 +559,12 @@ def documentos_novo():
         DocumentoController.criar_documento(form, current_user.id)
         flash("Documento enviado com sucesso!", "success")
         return redirect(url_for("documentos"))
-
     return render_template("documentos/novo.html", form=form)
 
 
 @app.route("/documentos/editar/<int:id>", methods=["GET", "POST"])
 @login_required
+@requires_roles('admin', 'gestor') 
 def documentos_editar(id):
     documento = DocumentoController.buscar_por_id(id)
     form = DocumentoForm(obj=documento)
@@ -571,7 +574,6 @@ def documentos_editar(id):
         DocumentoController.atualizar_documento(documento, form)
         flash("Documento atualizado!", "success")
         return redirect(url_for("documentos"))
-
     return render_template("documentos/edit.html", form=form, documento=documento)
 
 
@@ -583,6 +585,7 @@ def documentos_download(nome):
 
 @app.route("/documentos/deletar/<int:id>")
 @login_required
+@requires_roles('admin', 'gestor') 
 def documentos_deletar(id):
     documento = DocumentoController.buscar_por_id(id)
     DocumentoController.deletar_documento(documento)
