@@ -69,3 +69,71 @@
 .card {
     border-radius: 12px;
 }
+
+.table-actions {
+    white-space: nowrap;
+    min-width: 120px;
+}
+
+/* ----------------------------- */
+/* TAMANHO PADRÃO DOS CARDS      */
+/* ----------------------------- */
+
+/* Cards principais (primeira linha) */
+.card-fixed {
+    min-height: 150px !important; /* antes ~95px */
+}
+
+/* Cards padrão */
+.card-dashboard {
+    padding: 10px;
+    border-radius: 12px;
+}
+
+/* Gráficos maiores */
+.dashboard-chart {
+    height: 350px !important; /* Aumentado */
+    max-height: 380px !important;
+}
+
+/* Cards dos gráficos */
+.card-graph {
+    min-height: 420px !important; /* Aumentado */
+}
+
+/* Listas e tabelas maiores */
+.table td, .table th {
+    font-size: 1.05rem !important;
+    padding: 12px !important;
+}
+
+/* Títulos maiores */
+.card-header h6 {
+    font-size: 1.1rem !important;
+    font-weight: 600;
+}
+
+/* Cards da linha de indicadores */
+.indicador-card {
+    min-height: 160px !important;
+}
+
+/* Tipografia geral maior */
+h1, h2, h3, h4 {
+    font-size: 1.35rem !important;
+}
+
+h1.h3 {
+    font-size: 1.7rem !important;
+}
+
+/* Espaçamento maior antes dos indicadores */
+.dashboard-section-spacer {
+    margin-top: 40px !important;
+}
+
+/* Calendário maior */
+#calendar {
+    min-height: 680px !important;
+}
+

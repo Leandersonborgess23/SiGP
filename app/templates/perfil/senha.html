@@ -14,18 +14,34 @@
 
         <div class="mb-3">
             {{ form.senha_atual.label(class="form-label fw-bold") }}
-            {{ form.senha_atual(class="form-control form-control-lg", placeholder="Digite sua senha atual") }}
+            <div class="input-group">
+                {{ form.senha_atual(class="form-control form-control-lg", id="senhaAtual", placeholder="Digite sua senha atual") }}
+                <button type="button" class="btn btn-outline-secondary" id="toggleSenhaAtual">
+                    <i class="fa-solid fa-eye"></i>
+                </button>
+            </div>
         </div>
 
         <div class="mb-3">
             {{ form.nova_senha.label(class="form-label fw-bold") }}
-            {{ form.nova_senha(class="form-control form-control-lg", placeholder="Nova senha") }}
+            <div class="input-group">
+                {{ form.nova_senha(class="form-control form-control-lg", id="novaSenha", placeholder="Nova senha") }}
+                <button type="button" class="btn btn-outline-secondary" id="toggleNovaSenha">
+                    <i class="fa-solid fa-eye"></i>
+                </button>
+            </div>
         </div>
 
         <div class="mb-3">
             {{ form.confirmar_senha.label(class="form-label fw-bold") }}
-            {{ form.confirmar_senha(class="form-control form-control-lg", placeholder="Confirme a nova senha") }}
+            <div class="input-group">
+                {{ form.confirmar_senha(class="form-control form-control-lg", id="confirmarSenha", placeholder="Confirme a nova senha") }}
+                <button type="button" class="btn btn-outline-secondary" id="toggleConfirmarSenha">
+                    <i class="fa-solid fa-eye"></i>
+                </button>
+            </div>
         </div>
+
 
         <button class="btn btn-warning w-100 py-2 fw-bold">
             <i class="fa-solid fa-rotate"></i> Alterar Senha

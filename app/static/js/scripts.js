@@ -5,15 +5,18 @@ document.addEventListener("DOMContentLoaded", function () {
     // ----------------------
     const toggle = document.getElementById("sidebarToggle");
     const sidebar = document.getElementById("sidebar");
+    const content = document.getElementById("content");
 
-    if (toggle && sidebar) {
+    if (toggle && sidebar && content) {
         toggle.addEventListener("click", () => {
             sidebar.classList.toggle("collapsed");
+            content.classList.toggle("expanded");
         });
     }
 
+
     // ----------------------
-    // GRÁFICO 1 — Servidores por Secretaria
+    // GRÁFICO 1
     // ----------------------
     const ctx1 = document.getElementById('graficoServidoresSecretaria');
     if (ctx1 && typeof Chart !== "undefined") {
@@ -31,7 +34,7 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     // ----------------------
-    // GRÁFICO 2 — Distribuição de Cargos
+    // GRÁFICO 2
     // ----------------------
     const ctx2 = document.getElementById('graficoCargos');
     if (ctx2 && typeof Chart !== "undefined") {
@@ -51,16 +54,11 @@ document.addEventListener("DOMContentLoaded", function () {
                 plugins: {
                     datalabels: {
                         color: '#fff',
-                        font: {
-                            weight: 'bold',
-                            size: 12
-                        },
+                        font: { weight: 'bold', size: 12 },
                         formatter: (value, ctx) => {
                             const total = ctx.chart.data.datasets[0].data
                                 .reduce((acc, val) => acc + val, 0);
-
-                            const percentage = ((value / total) * 100).toFixed(1);
-                            return percentage + "%";
+                            return ((value / total) * 100).toFixed(1) + "%";
                         }
                     },
                     legend: { position: 'bottom' }
@@ -75,7 +73,6 @@ document.addEventListener("DOMContentLoaded", function () {
     // ----------------------
     const calendarEl = document.getElementById('calendar');
     if (calendarEl && typeof FullCalendar !== "undefined") {
-
         const calendar = new FullCalendar.Calendar(calendarEl, {
             initialView: 'dayGridMonth',
             locale: 'pt-br',
@@ -85,8 +82,39 @@ document.addEventListener("DOMContentLoaded", function () {
                 center: 'title',
                 right: ''
             },
-            events: "/api/eventos" 
+            events: "/api/eventos"
         });
+        calendar.render();
     }
+
+    Chart.defaults.plugins.legend.position = 'bottom';
+    Chart.defaults.plugins.legend.labels.boxWidth = 12;
+    Chart.defaults.maintainAspectRatio = false;
+
+
+    // ----------------------
+    // Mostrar / Ocultar Senhas
+    // ----------------------
+    function togglePassword(buttonId, inputId) {
+        const btn = document.getElementById(buttonId);
+        const input = document.getElementById(inputId);
+
+        if (btn && input) {
+            btn.addEventListener("click", () => {
+                const isPassword = input.type === "password";
+                input.type = isPassword ? "text" : "password";
+
+                btn.innerHTML = isPassword
+                    ? '<i class="fa-solid fa-eye-slash"></i>'
+                    : '<i class="fa-solid fa-eye"></i>';
+            });
+        }
+    }
+
+    // *** CHAMADAS DIRETAS (agora funcionam) ***
+    togglePassword("toggleSenhaLogin", "senhaLogin");
+    togglePassword("toggleSenhaAtual", "senhaAtual");
+    togglePassword("toggleNovaSenha", "novaSenha");
+    togglePassword("toggleConfirmarSenha", "confirmarSenha");
 
 });

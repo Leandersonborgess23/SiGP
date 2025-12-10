@@ -8,73 +8,61 @@
 <!-- ROW 1: CARDS RESUMO -->
 <div class="row">
 
-    <!-- Total Usuários -->
     <div class="col-xl-3 col-md-6 mb-4">
-        <div class="card border-left-primary shadow h-100 py-2">
+        <div class="card border-left-primary shadow h-100 py-3 card-dashboard card-fixed">
             <div class="card-body">
-                <div class="row no-gutters align-items-center">
-                    <div class="col">
-                        <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                        <div class="text-xs font-weight-bold text-primary text-uppercase mb-2">
                             Usuários Cadastrados</div>
-                        <div class="h5 mb-0 font-weight-bold text-gray-800">{{ total_usuarios }}</div>
+                        <div class="h4 mb-0 font-weight-bold text-gray-800">{{ total_usuarios }}</div>
                     </div>
-                    <div class="col-auto">
-                        <i class="fas fa-users fa-2x text-gray-300"></i>
-                    </div>
+                    <i class="fas fa-users fa-3x text-gray-300"></i>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- Total Servidores -->
     <div class="col-xl-3 col-md-6 mb-4">
-        <div class="card border-left-success shadow h-100 py-2">
+        <div class="card border-left-success shadow h-100 py-3 card-dashboard card-fixed">
             <div class="card-body">
-                <div class="row no-gutters align-items-center">
-                    <div class="col">
-                        <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                        <div class="text-xs font-weight-bold text-success text-uppercase mb-2">
                             Servidores Registrados</div>
-                        <div class="h5 mb-0 font-weight-bold text-gray-800">{{ total_servidores }}</div>
+                        <div class="h4 mb-0 font-weight-bold text-gray-800">{{ total_servidores }}</div>
                     </div>
-                    <div class="col-auto">
-                        <i class="fas fa-id-card fa-2x text-gray-300"></i>
-                    </div>
+                    <i class="fas fa-id-card fa-3x text-gray-300"></i>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- Total Secretarias -->
     <div class="col-xl-3 col-md-6 mb-4">
-        <div class="card border-left-warning shadow h-100 py-2">
+        <div class="card border-left-warning shadow h-100 py-3 card-dashboard card-fixed">
             <div class="card-body">
-                <div class="row no-gutters align-items-center">
-                    <div class="col">
-                        <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                        <div class="text-xs font-weight-bold text-warning text-uppercase mb-2">
                             Secretarias</div>
-                        <div class="h5 mb-0 font-weight-bold text-gray-800">{{ total_secretarias }}</div>
+                        <div class="h4 mb-0 font-weight-bold text-gray-800">{{ total_secretarias }}</div>
                     </div>
-                    <div class="col-auto">
-                        <i class="fas fa-building fa-2x text-gray-300"></i>
-                    </div>
+                    <i class="fas fa-building fa-3x text-gray-300"></i>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- Total Cargos -->
     <div class="col-xl-3 col-md-6 mb-4">
-        <div class="card border-left-info shadow h-100 py-2">
+        <div class="card border-left-info shadow h-100 py-3 card-dashboard card-fixed">
             <div class="card-body">
-                <div class="row no-gutters align-items-center">
-                    <div class="col">
-                        <div class="text-xs font-weight-bold text-info text-uppercase mb-1">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                        <div class="text-xs font-weight-bold text-info text-uppercase mb-2">
                             Cargos</div>
-                        <div class="h5 mb-0 font-weight-bold text-gray-800">{{ total_cargos }}</div>
+                        <div class="h4 mb-0 font-weight-bold text-gray-800">{{ total_cargos }}</div>
                     </div>
-                    <div class="col-auto">
-                        <i class="fas fa-briefcase fa-2x text-gray-300"></i>
-                    </div>
+                    <i class="fas fa-briefcase fa-3x text-gray-300"></i>
                 </div>
             </div>
         </div>
@@ -82,29 +70,29 @@
 
 </div>
 
-<!-- ROW 2: GRÁFICOS -->
+<!-- ========================= -->
+<!-- ROW 2 — GRÁFICOS (MAIORES) -->
+<!-- ========================= -->
 <div class="row">
 
-    <!-- Gráfico Servidores por Secretaria -->
-    <div class="col-xl-6 col-lg-6">
-        <div class="card shadow mb-4">
-            <div class="card-header py-3">
+    <div class="col-xl-6 col-lg-6 mb-4">
+        <div class="card shadow card-dashboard card-graph">
+            <div class="card-header">
                 <h6 class="m-0 font-weight-bold text-primary">Servidores por Secretaria</h6>
             </div>
             <div class="card-body">
-                <canvas id="graficoServidoresSecretaria"></canvas>
+                <canvas id="graficoServidoresSecretaria" class="dashboard-chart"></canvas>
             </div>
         </div>
     </div>
 
-    <!-- Gráfico de Pizza Cargos -->
-    <div class="col-xl-6 col-lg-6">
-        <div class="card shadow mb-4">
-            <div class="card-header py-3">
+    <div class="col-xl-6 col-lg-6 mb-4">
+        <div class="card shadow card-dashboard card-graph">
+            <div class="card-header">
                 <h6 class="m-0 font-weight-bold text-success">Distribuição de Cargos</h6>
             </div>
             <div class="card-body">
-                <canvas id="graficoCargos"></canvas>
+                <canvas id="graficoCargos" class="dashboard-chart"></canvas>
             </div>
         </div>
     </div>
@@ -114,14 +102,13 @@
 <!-- ROW 3: LISTAS -->
 <div class="row">
 
-    <!-- Últimos Usuários -->
     <div class="col-lg-6 mb-4">
-        <div class="card shadow">
+        <div class="card shadow card-dashboard">
             <div class="card-header">
                 <h6 class="m-0 font-weight-bold text-primary">Últimos Usuários Cadastrados</h6>
             </div>
             <div class="card-body">
-                <table class="table table-hover">
+                <table class="table table-hover large-table">
                     <thead>
                         <tr>
                             <th>Usuário</th>
@@ -141,14 +128,13 @@
         </div>
     </div>
 
-    <!-- Últimos Servidores -->
     <div class="col-lg-6 mb-4">
-        <div class="card shadow">
+        <div class="card shadow card-dashboard">
             <div class="card-header">
                 <h6 class="m-0 font-weight-bold text-success">Últimos Servidores Cadastrados</h6>
             </div>
             <div class="card-body">
-                <table class="table table-hover">
+                <table class="table table-hover large-table">
                     <thead>
                         <tr>
                             <th>Nome</th>
@@ -170,12 +156,13 @@
 
 </div>
 
-<div class="card mb-4">
+<!-- ROW 4: ATIVIDADES -->
+<div class="card mb-4 card-dashboard">
     <div class="card-header">
         <i class="fas fa-list"></i> Atividades Recentes
     </div>
     <div class="card-body">
-        <table class="table table-hover">
+        <table class="table table-hover large-table">
             <thead class="table-primary">
                 <tr>
                     <th>Data</th>
@@ -196,43 +183,41 @@
     </div>
 </div>
 
-<!-- ROW 4: Atividades + Notícias -->
+<!-- ROW 5: LOGS + NOTÍCIAS -->
 <div class="row">
 
     <div class="col-lg-6">
-        <div class="card shadow mb-4">
+        <div class="card shadow card-dashboard">
             <div class="card-header py-3">
                 <h6 class="m-0 font-weight-bold text-primary">Últimas Ações</h6>
             </div>
             <div class="card-body">
-                <ul class="list-group">
+                <ul class="list-group large-list">
                     {% for log in ultimos_logs %}
                     <li class="list-group-item d-flex justify-content-between align-items-center">
                         <span>
                             <strong>{{ log.usuario.nome if log.usuario else "Sistema" }}</strong> —
                             {{ log.acao }}
                         </span>
-                        <span class="text-muted" style="font-size: 0.8em;">
-                            {{ log.data.strftime("%d/%m %H:%M") }}
-                        </span>
+                        <span class="text-muted">{{ log.data.strftime("%d/%m %H:%M") }}</span>
                     </li>
                     {% endfor %}
                 </ul>
+
                 <div class="mt-3 text-right">
-                    <a href="/logs" class="btn btn-sm btn-primary">Ver todos</a>
+                    <a href="/logs" class="btn btn-lg btn-primary">Ver todos</a>
                 </div>
             </div>
         </div>
     </div>
 
-
     <div class="col-lg-6 mb-4">
-        <div class="card shadow">
+        <div class="card shadow card-dashboard">
             <div class="card-header">
                 <h6 class="m-0 font-weight-bold text-dark">Notícias da Prefeitura</h6>
             </div>
             <div class="card-body">
-                <ul class="list-group">
+                <ul class="list-group large-list">
 
                     {% if noticias %}
                         {% for n in noticias %}
@@ -254,41 +239,41 @@
 
 </div>
 
-<!-- Indicadores -->
-<div class="row">
+<!-- ROW 6: INDICADORES -->
+<div class="row dashboard-section-spacer">
 
     <div class="col-md-3 mb-4">
-        <div class="card border-left-primary shadow">
+        <div class="card border-left-primary shadow card-dashboard indicador-card">
             <div class="card-body">
                 <h6 class="text-primary font-weight-bold">População</h6>
-                <h3>10.345</h3>
+                <h2>10.345</h2>
             </div>
         </div>
     </div>
 
     <div class="col-md-3 mb-4">
-        <div class="card border-left-success shadow">
+        <div class="card border-left-success shadow card-dashboard indicador-card">
             <div class="card-body">
                 <h6 class="text-success font-weight-bold">IDEB</h6>
-                <h3>5.1</h3>
+                <h2>5.1</h2>
             </div>
         </div>
     </div>
 
     <div class="col-md-3 mb-4">
-        <div class="card border-left-warning shadow">
+        <div class="card border-left-warning shadow card-dashboard indicador-card">
             <div class="card-body">
                 <h6 class="text-warning font-weight-bold">PIB Per Capita</h6>
-                <h3>R$ 18.900</h3>
+                <h2>R$ 18.900</h2>
             </div>
         </div>
     </div>
 
     <div class="col-md-3 mb-4">
-        <div class="card border-left-danger shadow">
+        <div class="card border-left-danger shadow card-dashboard indicador-card">
             <div class="card-body">
                 <h6 class="text-danger font-weight-bold">Servidores</h6>
-                <h3>{{ total_servidores }}</h3>
+                <h2>{{ total_servidores }}</h2>
             </div>
         </div>
     </div>
@@ -298,11 +283,11 @@
 <!-- CALENDÁRIO -->
 <div class="row">
     <div class="col-lg-12">
-        <div class="card shadow mb-4">
+        <div class="card shadow card-dashboard">
             <div class="card-header">
                 <h6 class="m-0 font-weight-bold text-info">Calendário</h6>
             </div>
-            <div class="card-body" style="min-height: 520px;">
+            <div class="card-body" style="min-height: 680px;">
                 <div id="calendar" style="height:100%;"></div>
             </div>
         </div>
