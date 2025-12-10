@@ -9,5 +9,5 @@ from .evento import Evento
 from .protocolo import Protocolo
 from .tramitacao import Tramitacao
 from .logacao import LogAcao
-
+from .documento import Documento
 

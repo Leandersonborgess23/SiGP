@@ -19,29 +19,42 @@
 /* ============================================================
     SIDEBAR
 ============================================================ */
-#wrapper { min-height: 100vh !important; }
+#wrapper { 
+    min-height: 100vh !important; 
+    display: flex;
+}
 
 #sidebar {
     width: 240px;
     background-color: var(--sigp-blue);
     color: white;
-    height: 100vh;
-    position: sticky;
+    position: fixed;     /* FIXA NA TELA */
     top: 0;
+    left: 0;
+    bottom: 0;
+    overflow-y: auto;    /* PERMITE ROLAR QUANDO PASSAR DO TAMANHO */
     padding: 1rem;
-    transition: all .3s ease;
+    padding-bottom: 120px;
     box-shadow: var(--smooth-shadow);
+    transition: all .3s ease;
 }
 
 #sidebar.collapsed {
     width: 0 !important;
     padding: 0 !important;
-    opacity: 0;
-    overflow: hidden;
+    opacity: 0 !important;
+    overflow: hidden !important;
+}
+
+#content {
+    margin-left: 240px !important; /* acompanha o sidebar FIXO */
+    width: calc(100% - 240px);
+    transition: margin-left .3s ease;
 }
 
 #content.expanded {
     margin-left: 0 !important;
+    width: 100% !important;
 }
 
 #sidebar img {
@@ -66,6 +79,27 @@
     background-color: rgba(255,255,255,0.22) !important;
     font-weight: 700;
 }
+
+/* Scrollbar elegante apenas no sidebar */
+#sidebar::-webkit-scrollbar {
+    width: 8px;
+}
+
+#sidebar::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.12);
+    border-radius: 5px;
+}
+
+#sidebar::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.45);
+    border-radius: 10px;
+    min-height: 35px !important;
+}
+
+#sidebar::-webkit-scrollbar-thumb:hover {
+    background: rgba(255, 255, 255, 0.65);
+}
+
 
 /* ============================================================
     CARDS – NOVO DESIGN
@@ -178,28 +212,87 @@ h1, h2, h3, h4 {
     max-height: 48px;
 }
 
-/* ============================================================
-    DARK MODE (opcional)
-============================================================ */
-body.dark-mode {
-    background: #1f1f1f !important;
-    color: #eaeaea !important;
+/* ======================================== */
+/*                DARK MODE                 */
+/* ======================================== */
+
+.dark-mode {
+    background-color: #1e1e1e !important;
+    color: #e6e6e6 !important;
 }
 
-body.dark-mode .card {
-    background: #2b2b2b !important;
+/* Fundo global */
+.dark-mode body,
+.dark-mode #content {
+    background-color: #1e1e1e !important;
+    color: #e6e6e6 !important;
+}
+
+/* Navbar */
+.dark-mode .navbar {
+    background: #111 !important;
+    border-bottom: 1px solid #333;
+}
+
+.dark-mode .navbar span,
+.dark-mode .navbar-brand,
+.dark-mode .navbar .dropdown-toggle {
     color: #fff !important;
 }
 
-body.dark-mode .table tbody tr {
-    background: #323232 !important;
+/* Sidebar */
+.dark-mode #sidebar {
+    background-color: #0a3d7d !important;
+}
+
+.dark-mode #sidebar .nav-link {
     color: #fff !important;
 }
 
-body.dark-mode #sidebar {
-    background-color: #111 !important;
+.dark-mode #sidebar .nav-link:hover {
+    background-color: rgba(255,255,255,0.2) !important;
 }
 
-body.dark-mode #sidebar .nav-link:hover {
-    background-color: #222 !important;
+/* Cards */
+.dark-mode .card {
+    background-color: #2c2c2c !important;
+    color: #e6e6e6 !important;
+    border: 1px solid #444 !important;
 }
+
+/* Card headers */
+.dark-mode .card-header {
+    background-color: #252525 !important;
+    border-bottom: 1px solid #444 !important;
+}
+
+/* Tabelas */
+.dark-mode table {
+    color: #fff !important;
+}
+
+.dark-mode .table-hover tbody tr:hover {
+    background-color: #333 !important;
+}
+
+/* Lista */
+.dark-mode .list-group-item {
+    background-color: #2e2e2e !important;
+    color: #ddd !important;
+    border-color: #444 !important;
+}
+
+/* Botões */
+.dark-mode .btn {
+    border-color: #666 !important;
+}
+
+.dark-mode .btn-primary {
+    background-color: #0d6efd !important;
+}
+
+/* Ícones */
+.dark-mode i {
+    color: #ddd !important;
+}
+

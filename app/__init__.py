@@ -4,9 +4,12 @@ from config import Config
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 from flask_login import LoginManager
+import os
 
 app = Flask(__name__)
 app.config.from_object(Config)
+upload_dir = app.config["UPLOAD_DOCUMENTOS"]
+os.makedirs(upload_dir, exist_ok=True)
 
 db = SQLAlchemy() #Criando objeto
 csrf = CSRFProtect(app) #Protege os formulários contra ataques CSRF
@@ -16,6 +19,7 @@ db.init_app(app)
 migrate.init_app(app, db)
 login_manager.init_app(app)
 login_manager.login_view = 'login'
+
 
 from app import routes, models
 

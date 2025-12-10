@@ -11,3 +11,5 @@ class Secretaria(db.Model):
     prefeitura_id: so.Mapped[int] = so.mapped_column(sa.ForeignKey(models.Prefeitura.id), index=True)
     servidores: so.Mapped[list] = so.relationship("Servidor", back_populates="secretaria")
     prefeitura: so.Mapped[models.Prefeitura] = so.relationship(back_populates="secretarias")
+    documentos: so.Mapped[list["Documento"]] = so.relationship("Documento", back_populates="secretaria")
+

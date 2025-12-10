@@ -20,4 +20,4 @@ class Usuario(db.Model, UserMixin):
 
     servidor: so.Mapped["Servidor"] = so.relationship(back_populates="usuario")
     eventos: so.Mapped[list] = so.relationship("Evento", back_populates="usuario")
-
+    documentos: so.Mapped[list["Documento"]] = so.relationship("Documento", back_populates="usuario")

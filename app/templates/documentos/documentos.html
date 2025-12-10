@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+{% block titulo %}Documentos - SIGP{% endblock %}
+{% block conteudo %}
+
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <h3 class="text-primary">
+        <i class="fa-solid fa-folder-open"></i>    
+        Documentos
+    </h3>
+
+    <a href="{{ url_for('documentos_novo') }}" class="btn btn-primary mb-3">
+        <i class="fa-solid fa-folder-open"></i>            
+        + Novo Documento
+    </a>
+</div>
+
+<div class="card shadow">
+    <div class="card-body">
+        <table class="table table-hover table-striped">
+            <thead class="table-primary">
+                <tr>
+                    <th>Título</th>
+                    <th>Categoria</th>
+                    <th>Secretaria</th>
+                    <th>Data</th>
+                    <th>Ações</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for d in docs %}
+                <tr>
+                    <td>{{ d.titulo }}</td>
+                    <td>{{ d.categoria }}</td>
+                    <td>{{ d.secretaria.nome if d.secretaria else '-' }}</td>
+                    <td>{{ d.data_criacao.strftime('%d/%m/%Y') }}</td>
+                    <td>
+                        <a class="btn btn-sm btn-success" href="{{ url_for('documentos_download', nome=d.arquivo) }}">Baixar</a>
+                        <a class="btn btn-sm btn-warning" href="{{ url_for('documentos_editar', id=d.id) }}">Editar</a>
+                        <a class="btn btn-sm btn-danger" href="{{ url_for('documentos_deletar', id=d.id) }}">Excluir</a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+{% endblock %}

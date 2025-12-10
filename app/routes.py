@@ -1,5 +1,5 @@
 from app import app, db
-from flask import render_template, redirect, url_for, flash, request
+from flask import render_template, redirect, url_for, flash, request, send_from_directory, current_app
 from app.forms.login_form import LoginForm
 from app.forms.usuario_form import UsuarioForm
 from app.forms.servidor_form import ServidorForm
@@ -14,6 +14,7 @@ from app.forms.noticia_form import NoticiaForm
 from app.forms.evento_form import EventoForm
 from app.forms.protocolo_form import ProtocoloForm
 from app.forms.tramitacao_form import TramitacaoForm
+from app.forms.documento_form import DocumentoForm
 from app.controllers.cargoController import CargoController
 from app.controllers.eventoController import EventoController
 from app.controllers.authenticationController import AuthenticationController
@@ -22,10 +23,12 @@ from app.controllers.servidorController import ServidorController
 from app.controllers.secretariaController import SecretariaController
 from app.controllers.noticiaController import NoticiaController
 from app.controllers.protocoloController import ProtocoloController
+from app.controllers.documentoController import DocumentoController
 from app.models import Secretaria, Cargo, Usuario, Servidor, Prefeitura, Atividade
 from app.models.tramitacao import Tramitacao
 from app.models.protocolo import Protocolo
 from app.models.logacao import LogAcao
+from app.models.documento import Documento
 from app.utils.log import registrar_atividade
 from flask_login import current_user, login_required
 from app.auth.decorators import requires_roles
@@ -93,10 +96,6 @@ def perfil_editar():
 
         usuario.username = form.username.data
         usuario.email = form.email.data
-
-        # Senha nova opcional
-        if form.password.data:
-            AuthenticationController.atualizar_senha(usuario, form.password.data)
 
         # FOTO DE PERFIL
         if form.foto.data:
@@ -454,6 +453,7 @@ def protocolos_listar():
     protocolos = ProtocoloController.listar()
     return render_template('protocolos/protocolos.html', protocolos=protocolos)
 
+
 @app.route('/protocolos/novo', methods=['GET', 'POST'])
 def protocolos_cadastrar():
     form = ProtocoloForm()
@@ -474,6 +474,7 @@ def protocolos_cadastrar():
 
     return render_template('protocolos/cadastro.html', form=form)
 
+
 @app.route('/protocolos/<int:id>')
 def protocolos_visualizar(id):
     protocolo = ProtocoloController.buscar(id)
@@ -486,6 +487,7 @@ def protocolos_visualizar(id):
     form.para_secretaria_id.choices = [(s.id, s.nome) for s in secretarias]
 
     return render_template('protocolos/visualizar.html', protocolo=protocolo, form=form)
+
 
 @app.route('/protocolos/<int:id>/tramitar', methods=['POST'])
 def protocolos_tramitar(id):
@@ -528,6 +530,64 @@ def tramitacoes_listar():
 def logs():
     logs = LogAcao.query.order_by(LogAcao.data.desc()).limit(200).all()
     return render_template("logs/logs.html", logs=logs)
+
+
+UPLOAD_FOLDER = os.path.join(app.root_path, "uploads", "documentos")
+
+# cria a pasta se não existir
+if not os.path.exists(UPLOAD_FOLDER):
+    os.makedirs(UPLOAD_FOLDER)
+
+
+@app.route("/documentos")
+@login_required
+def documentos():
+    docs = DocumentoController.listar_documentos()
+    return render_template("documentos/documentos.html", docs=docs)
+
+
+@app.route("/documentos/novo", methods=["GET", "POST"])
+@login_required
+def documentos_novo():
+    form = DocumentoForm()
+    form.carregar_secretarias()
+
+    if form.validate_on_submit():
+        DocumentoController.criar_documento(form, current_user.id)
+        flash("Documento enviado com sucesso!", "success")
+        return redirect(url_for("documentos"))
+
+    return render_template("documentos/novo.html", form=form)
+
+
+@app.route("/documentos/editar/<int:id>", methods=["GET", "POST"])
+@login_required
+def documentos_editar(id):
+    documento = DocumentoController.buscar_por_id(id)
+    form = DocumentoForm(obj=documento)
+    form.carregar_secretarias()
+
+    if form.validate_on_submit():
+        DocumentoController.atualizar_documento(documento, form)
+        flash("Documento atualizado!", "success")
+        return redirect(url_for("documentos"))
+
+    return render_template("documentos/edit.html", form=form, documento=documento)
+
+
+@app.route("/documentos/download/<nome>")
+@login_required
+def documentos_download(nome):
+    return send_from_directory(current_app.config["UPLOAD_DOCUMENTOS"], nome)
+
+
+@app.route("/documentos/deletar/<int:id>")
+@login_required
+def documentos_deletar(id):
+    documento = DocumentoController.buscar_por_id(id)
+    DocumentoController.deletar_documento(documento)
+    flash("Documento removido!", "success")
+    return redirect(url_for("documentos"))
 
 
 @app.route("/dashboard")

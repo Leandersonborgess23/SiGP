@@ -117,5 +117,31 @@ document.addEventListener("DOMContentLoaded", function () {
     togglePassword("toggleNovaSenha", "novaSenha");
     togglePassword("toggleConfirmarSenha", "confirmarSenha");
 
+    // ========================================
+    // DARK MODE
+    // ========================================
+    const toggleBtn = document.getElementById("darkModeToggle");
+
+    function applyDarkMode(enabled) {
+        if (enabled) {
+            document.documentElement.classList.add("dark-mode");
+            toggleBtn.innerHTML = '<i class="fa-solid fa-sun"></i>';
+        } else {
+            document.documentElement.classList.remove("dark-mode");
+            toggleBtn.innerHTML = '<i class="fa-solid fa-moon"></i>';
+        }
+    }
+
+    // Carregar configuração salva
+    const darkModeEnabled = localStorage.getItem("darkMode") === "true";
+    applyDarkMode(darkModeEnabled);
+
+    // Alternar ao clicar
+    toggleBtn.addEventListener("click", () => {
+        const isDark = document.documentElement.classList.contains("dark-mode");
+        applyDarkMode(!isDark);
+        localStorage.setItem("darkMode", !isDark);
+    });
+
 
 });
