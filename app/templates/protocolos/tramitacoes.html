@@ -31,6 +31,10 @@
             <td>{{ t.data.strftime("%d/%m/%Y %H:%M") }}</td>
             <td>{{ t.observacao or "-" }}</td>
         </tr>
+        {% else %}
+        <tr>
+            <td colspan="6" class="text-center text-muted">Nenhuma tramitação realizada.</td>
+        </tr>
         {% endfor %}
     </tbody>
 </table>

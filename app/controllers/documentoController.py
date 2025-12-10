@@ -54,7 +54,6 @@ class DocumentoController:
         documento.privado = form.privado.data
         documento.tags = form.tags.data
 
-        # Atualizar arquivo se enviado
         arquivo = form.arquivo.data
         if arquivo:
             nome_seguro = secure_filename(arquivo.filename)
@@ -67,6 +66,14 @@ class DocumentoController:
 
     @staticmethod
     def deletar_documento(documento):
-        documento.ativo = False
-        db.session.commit()
+        if documento.arquivo:
+            caminho_arquivo = os.path.join(
+                current_app.config["UPLOAD_DOCUMENTOS"], documento.arquivo
+            )
 
+            if os.path.exists(caminho_arquivo):
+                os.remove(caminho_arquivo)
+
+        db.session.delete(documento)
+        db.session.commit()
+        return True
