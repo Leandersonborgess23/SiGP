@@ -12,7 +12,6 @@ class UsuarioController:
             form.populate_obj(usuario)
             usuario.password_hash = generate_password_hash(form.password.data)
 
-            # Se for o primeiro usuário, torna admin automaticamente 
             from app.models.usuario import Usuario as UModel
             if UModel.query.count() == 0:
                 usuario.role = "admin"
@@ -48,7 +47,7 @@ class UsuarioController:
         usuario = db.session.get(Usuario, id)
         if usuario:
             try:
-                form.populate_obj(usuario)  # Preenche o objeto com os dados do form
+                form.populate_obj(usuario)  
                 db.session.commit()
                 print('Usuário atualizado com sucesso!')
                 return True

@@ -1,6 +1,3 @@
-/* ============================================================
-    TEMA AZUL PRINCIPAL
-============================================================ */
 :root {
     --sigp-blue: #0d6efd;
     --sigp-blue-dark: #0a58ca;
@@ -8,7 +5,6 @@
     --card-radius: 14px;
     --smooth-shadow: 0 4px 14px rgba(0,0,0,0.08);
 
-    /* Cores adicionais para bordas superiores */
     --border-primary: #0d6efd;
     --border-success: #28a745;
     --border-warning: #ffc107;
@@ -16,9 +12,7 @@
     --border-danger: #dc3545;
 }
 
-/* ============================================================
-    SIDEBAR
-============================================================ */
+
 #wrapper { 
     min-height: 100vh !important; 
     display: flex;
@@ -28,11 +22,11 @@
     width: 240px;
     background-color: var(--sigp-blue);
     color: white;
-    position: fixed;     /* FIXA NA TELA */
+    position: fixed;    
     top: 0;
     left: 0;
     bottom: 0;
-    overflow-y: auto;    /* PERMITE ROLAR QUANDO PASSAR DO TAMANHO */
+    overflow-y: auto;    
     padding: 1rem;
     padding-bottom: 120px;
     box-shadow: var(--smooth-shadow);
@@ -47,7 +41,7 @@
 }
 
 #content {
-    margin-left: 240px !important; /* acompanha o sidebar FIXO */
+    margin-left: 240px !important; 
     width: calc(100% - 240px);
     transition: margin-left .3s ease;
 }
@@ -80,7 +74,7 @@
     font-weight: 700;
 }
 
-/* Scrollbar elegante apenas no sidebar */
+
 #sidebar::-webkit-scrollbar {
     width: 8px;
 }
@@ -101,9 +95,6 @@
 }
 
 
-/* ============================================================
-    CARDS – NOVO DESIGN
-============================================================ */
 .card {
     border-radius: var(--card-radius);
     box-shadow: var(--smooth-shadow);
@@ -111,23 +102,19 @@
     transition: transform .15s ease, box-shadow .15s ease;
 }
 
-/* Efeito hover nos cards principais do dashboard */
 .card-dashboard:hover {
     transform: translateY(-3px);
     box-shadow: 0 6px 18px rgba(0,0,0,0.12);
 }
 
-/* Borda superior colorida – estilo GOV */
 .card.border-left-primary { border-top: 4px solid var(--border-primary) !important; }
 .card.border-left-success { border-top: 4px solid var(--border-success) !important; }
 .card.border-left-warning { border-top: 4px solid var(--border-warning) !important; }
 .card.border-left-info    { border-top: 4px solid var(--border-info) !important; }
 .card.border-left-danger  { border-top: 4px solid var(--border-danger) !important; }
 
-/* Cards principais da primeira linha */
 .card-fixed { min-height: 160px !important; }
 
-/* Cards de gráficos */
 .card-graph { min-height: 430px !important; }
 
 .dashboard-chart {
@@ -135,12 +122,8 @@
     max-height: 390px !important;
 }
 
-/* Indicadores */
 .indicador-card { min-height: 165px !important; }
 
-/* ============================================================
-    TABELAS MODERNIZADAS
-============================================================ */
 .table {
     border-collapse: separate !important;
     border-spacing: 0 6px;
@@ -168,16 +151,10 @@
     border: none !important;
 }
 
-/* ============================================================
-    CALENDÁRIO
-============================================================ */
 #calendar {
     min-height: 680px !important;
 }
 
-/* ============================================================
-    TIPOGRAFIA E TÍTULOS
-============================================================ */
 h1, h2, h3, h4 {
     font-weight: 700;
 }
@@ -187,9 +164,6 @@ h1, h2, h3, h4 {
     font-weight: 700;
 }
 
-/* ============================================================
-    MARCA SIGP NO NAVBAR
-============================================================ */
 #sigp-brand {
     font-size: 1.95rem !important;
     font-weight: 800;
@@ -202,7 +176,6 @@ h1, h2, h3, h4 {
     margin-top: -2px;
 }
 
-/* Responsivo */
 @media (max-width: 575px) {
     #sigp-subtitle { display: none; }
     #sigp-brand { font-size: 1.65rem !important; }
@@ -212,23 +185,17 @@ h1, h2, h3, h4 {
     max-height: 48px;
 }
 
-/* ======================================== */
-/*                DARK MODE                 */
-/* ======================================== */
-
 .dark-mode {
     background-color: #1e1e1e !important;
     color: #e6e6e6 !important;
 }
 
-/* Fundo global */
 .dark-mode body,
 .dark-mode #content {
     background-color: #1e1e1e !important;
     color: #e6e6e6 !important;
 }
 
-/* Navbar */
 .dark-mode .navbar {
     background: #111 !important;
     border-bottom: 1px solid #333;
@@ -240,7 +207,7 @@ h1, h2, h3, h4 {
     color: #fff !important;
 }
 
-/* Sidebar */
+
 .dark-mode #sidebar {
     background-color: #0a3d7d !important;
 }
@@ -253,20 +220,18 @@ h1, h2, h3, h4 {
     background-color: rgba(255,255,255,0.2) !important;
 }
 
-/* Cards */
+
 .dark-mode .card {
     background-color: #2c2c2c !important;
     color: #e6e6e6 !important;
     border: 1px solid #444 !important;
 }
 
-/* Card headers */
 .dark-mode .card-header {
     background-color: #252525 !important;
     border-bottom: 1px solid #444 !important;
 }
 
-/* Tabelas */
 .dark-mode table {
     color: #fff !important;
 }
@@ -275,14 +240,12 @@ h1, h2, h3, h4 {
     background-color: #333 !important;
 }
 
-/* Lista */
 .dark-mode .list-group-item {
     background-color: #2e2e2e !important;
     color: #ddd !important;
     border-color: #444 !important;
 }
 
-/* Botões */
 .dark-mode .btn {
     border-color: #666 !important;
 }
@@ -291,8 +254,6 @@ h1, h2, h3, h4 {
     background-color: #0d6efd !important;
 }
 
-/* Ícones */
 .dark-mode i {
     color: #ddd !important;
 }
-
