@@ -11,5 +11,5 @@ class Config:
     BASE_DIR = os.path.abspath(os.path.dirname(__file__))
 
     UPLOAD_DOCUMENTOS = os.path.join(BASE_DIR, "uploads", "documentos")
-    MAX_CONTENT_LENGTH = 20 * 1024 * 1024  # 20 MB
+    MAX_CONTENT_LENGTH = 20 * 1024 * 1024  
     ALLOWED_EXTENSIONS = {'pdf', 'doc', 'docx', 'xls', 'xlsx', 'jpg', 'jpeg', 'png'}

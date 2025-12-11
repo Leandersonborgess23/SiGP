@@ -432,6 +432,7 @@ def eventos_delete(id):
 
 
 @app.route("/api/eventos")
+@login_required
 def api_eventos():
     eventos = EventoController.listar()
 
@@ -604,12 +605,9 @@ def dashboard():
     ultimos_servidores = Servidor.query.order_by(Servidor.id.desc()).limit(5).all()
     atividades = Atividade.query.order_by(Atividade.data.desc()).limit(10).all()
     noticias = NoticiaController.listar(limit=5)
-    eventos = EventoController.listar()
     ultimos_logs = LogAcao.query.order_by(LogAcao.data.desc()).limit(10).all()
 
 
-
-    # Dados para gráficos
     servidores_por_secretaria = (
         db.session.query(Secretaria.nome, db.func.count(Servidor.id))
         .join(Servidor, Servidor.secretaria_id == Secretaria.id)
@@ -636,6 +634,5 @@ def dashboard():
         ultimos_servidores=ultimos_servidores,
         atividades=atividades,
         noticias=noticias,
-        eventos=eventos,
         ultimos_logs=ultimos_logs
     )

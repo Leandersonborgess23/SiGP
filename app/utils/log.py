@@ -9,4 +9,4 @@ def registrar_atividade(acao):
         db.session.add(registro)
         db.session.commit()
     except:
-        pass  # evita crash caso algo falhe
+        pass  

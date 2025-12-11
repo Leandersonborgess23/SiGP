@@ -23,12 +23,11 @@ class ProtocoloController:
             p = Protocolo(
                 titulo=form.titulo.data.strip(),
                 descricao=form.descricao.data.strip() if form.descricao.data else None,
-                secretaria_origem_id=None,  # será definido abaixo (se tiver prefeitura/secretaria atual)
+                secretaria_origem_id=None,  
                 secretaria_destino_id=form.secretaria_destino_id.data if form.secretaria_destino_id.data else None,
                 criado_por=current_user.id if current_user and hasattr(current_user, 'id') else None
             )
 
-            # salva arquivo se houver
             arquivo_filename = None
             if form.arquivo.data:
                 file = form.arquivo.data
@@ -40,7 +39,6 @@ class ProtocoloController:
                     arquivo_filename = f"uploads/protocolos/{filename}"
                     p.arquivo = arquivo_filename
 
-            # tenta associar secretaria_origem (ex.: se usuário possui servidor/secretaria)
             try:
                 if hasattr(current_user, "servidor") and current_user.servidor and current_user.servidor.secretaria:
                     p.secretaria_origem_id = current_user.servidor.secretaria.id
@@ -50,11 +48,9 @@ class ProtocoloController:
             db.session.add(p)
             db.session.commit()
 
-            # gerar número definitivo com base no id
             p.gerar_numero()
             db.session.commit()
 
-            # criar tramitacao inicial (opcional) - registra entrada
             t = Tramitacao(
                 protocolo_id=p.id,
                 de_secretaria_id=None,
@@ -81,7 +77,6 @@ class ProtocoloController:
     @staticmethod
     def listar(filtros=None):
         q = Protocolo.query.order_by(Protocolo.data_criacao.desc())
-        # filtros pode ser dict com keys: numero, status, secretaria_id
         if filtros:
             if filtros.get("numero"):
                 q = q.filter(Protocolo.numero == filtros["numero"])
@@ -125,7 +120,6 @@ class ProtocoloController:
             if not p:
                 return False
 
-            # cria registro de tramitacao
             t = Tramitacao(
                 protocolo_id=p.id,
                 de_secretaria_id=p.secretaria_destino_id or p.secretaria_origem_id,
@@ -144,7 +138,6 @@ class ProtocoloController:
 
                     file.save(os.path.join(caminho, filename))
 
-                    # salva caminho no modelo
                     t.arquivo = f"uploads/tramitacoes/{filename}"
 
                     registrar_log(
@@ -154,7 +147,6 @@ class ProtocoloController:
                         detalhe=f"Arquivo: {filename}"
                     )
                     
-            # atualiza destino do protocolo e status
             p.secretaria_destino_id = form.para_secretaria_id.data
             p.status = "Em Análise"
             p.data_atualizacao = datetime.utcnow()

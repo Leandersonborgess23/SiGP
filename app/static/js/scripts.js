@@ -1,8 +1,5 @@
 document.addEventListener("DOMContentLoaded", function () {
-
-    // ----------------------
     // SIDEBAR
-    // ----------------------
     const toggle = document.getElementById("sidebarToggle");
     const sidebar = document.getElementById("sidebar");
     const content = document.getElementById("content");
@@ -14,10 +11,7 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
 
-
-    // ----------------------
     // GRÁFICO 1
-    // ----------------------
     const ctx1 = document.getElementById('graficoServidoresSecretaria');
     if (ctx1 && typeof Chart !== "undefined") {
         new Chart(ctx1, {
@@ -33,9 +27,7 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
 
-    // ----------------------
     // GRÁFICO 2
-    // ----------------------
     const ctx2 = document.getElementById('graficoCargos');
     if (ctx2 && typeof Chart !== "undefined") {
         new Chart(ctx2, {
@@ -68,33 +60,7 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
 
-    // ----------------------
-    // CALENDÁRIO
-    // ----------------------
-    const calendarEl = document.getElementById('calendar');
-    if (calendarEl && typeof FullCalendar !== "undefined") {
-        const calendar = new FullCalendar.Calendar(calendarEl, {
-            initialView: 'dayGridMonth',
-            locale: 'pt-br',
-            height: 520,
-            headerToolbar: {
-                left: 'prev,next today',
-                center: 'title',
-                right: ''
-            },
-            events: "/api/eventos"
-        });
-        calendar.render();
-    }
-
-    Chart.defaults.plugins.legend.position = 'bottom';
-    Chart.defaults.plugins.legend.labels.boxWidth = 12;
-    Chart.defaults.maintainAspectRatio = false;
-
-
-    // ----------------------
     // Mostrar / Ocultar Senhas
-    // ----------------------
     function togglePassword(buttonId, inputId) {
         const btn = document.getElementById(buttonId);
         const input = document.getElementById(inputId);
@@ -111,15 +77,12 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     }
 
-    // *** CHAMADAS DIRETAS (agora funcionam) ***
     togglePassword("toggleSenhaLogin", "senhaLogin");
     togglePassword("toggleSenhaAtual", "senhaAtual");
     togglePassword("toggleNovaSenha", "novaSenha");
     togglePassword("toggleConfirmarSenha", "confirmarSenha");
 
-    // ========================================
     // DARK MODE
-    // ========================================
     const toggleBtn = document.getElementById("darkModeToggle");
 
     function applyDarkMode(enabled) {
@@ -132,11 +95,9 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     }
 
-    // Carregar configuração salva
     const darkModeEnabled = localStorage.getItem("darkMode") === "true";
     applyDarkMode(darkModeEnabled);
 
-    // Alternar ao clicar
     toggleBtn.addEventListener("click", () => {
         const isDark = document.documentElement.classList.contains("dark-mode");
         applyDarkMode(!isDark);
